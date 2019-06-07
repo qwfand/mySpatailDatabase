@@ -1,0 +1,1096 @@
+1
+00:00:00,300 --> 00:00:03,650
+Welcome back to the discussion
+of spatial computing.
+
+2
+00:00:04,690 --> 00:00:09,200
+With this video,
+we start a new module on Spatial Networks.
+
+3
+00:00:09,200 --> 00:00:13,420
+So at the end of the first
+video we have two objectives.
+
+4
+00:00:13,420 --> 00:00:19,630
+All of us should be able to describe the
+societal importance of spatial networks.
+
+5
+00:00:19,630 --> 00:00:22,460
+Why we are studying this,
+who can benefit and so on.
+
+6
+00:00:23,540 --> 00:00:29,710
+And in addition, we also want to discuss
+the limitations of spatial querying that
+
+7
+00:00:29,710 --> 00:00:35,550
+we discussed earlier in context of spatial
+networks and their applications, okay.
+
+8
+00:00:35,550 --> 00:00:38,960
+So, let's first look at spatial
+networks and where they come from.
+
+9
+00:00:40,160 --> 00:00:43,410
+A very classical use case is navigation.
+
+10
+00:00:43,410 --> 00:00:49,278
+So navigation pertains to finding
+routes to a particular destination,
+
+11
+00:00:49,278 --> 00:00:55,062
+and that navigation is really you know,
+as old as humans, right.
+
+12
+00:00:55,062 --> 00:01:00,199
+So, you know, when humans, they had
+not settled down for agriculture and
+
+13
+00:01:00,199 --> 00:01:04,840
+so on, they still had to go find food and
+water and other things.
+
+14
+00:01:04,840 --> 00:01:07,960
+And they had to probably remember routes,
+very much like how elephants and
+
+15
+00:01:07,960 --> 00:01:12,524
+other migratory species do that today,
+okay.
+
+16
+00:01:12,524 --> 00:01:18,184
+Once humans settled, then you will still
+see the notions like treasure hunt, right.
+
+17
+00:01:18,184 --> 00:01:23,771
+Even Columbus, you know, when he came to
+West Indies or what we call America today,
+
+18
+00:01:23,771 --> 00:01:28,352
+was looking for trade routes to
+to get spices from India, okay.
+
+19
+00:01:28,352 --> 00:01:32,213
+So again, knowing the routes were very,
+very important for different kind of
+
+20
+00:01:32,213 --> 00:01:35,662
+trades, and there were well known
+routes like silk route over land and
+
+21
+00:01:35,662 --> 00:01:37,610
+people are finding routes over ocean.
+
+22
+00:01:38,830 --> 00:01:45,175
+Another important group which deals with
+navigation a lot is you can say Defense or
+
+23
+00:01:45,175 --> 00:01:46,900
+Armed Forces, right.
+
+24
+00:01:46,900 --> 00:01:49,600
+So they again, need to have
+many different kinds of routes.
+
+25
+00:01:49,600 --> 00:01:53,345
+So if they have a particular target,
+they need to find a stealth route to
+
+26
+00:01:53,345 --> 00:01:56,640
+reach there without getting
+detected by the adversary.
+
+27
+00:01:56,640 --> 00:01:59,052
+And even if they are not looking for
+target if,
+
+28
+00:01:59,052 --> 00:02:03,030
+if just, you know, the units are placed
+somewhere, they need to get food and
+
+29
+00:02:03,030 --> 00:02:07,370
+supplies to the troops and for
+that they need supply routes.
+
+30
+00:02:07,370 --> 00:02:09,470
+So routes and navigations are, you know,
+
+31
+00:02:09,470 --> 00:02:13,720
+very, very core activities
+in human society, okay.
+
+32
+00:02:13,720 --> 00:02:17,248
+But more recently, you know,
+this has come to all of us and
+
+33
+00:02:17,248 --> 00:02:21,723
+you can probably recognize the next
+set of examples much quicker, okay.
+
+34
+00:02:21,723 --> 00:02:28,100
+So probably, you know, many of you use
+these navigation apps on smartphones.
+
+35
+00:02:28,100 --> 00:02:31,640
+Using which you can essentially find
+a route to your friends place or
+
+36
+00:02:31,640 --> 00:02:33,600
+to work or school.
+
+37
+00:02:33,600 --> 00:02:38,341
+Before smartphone apps were popular,
+we were also had dedicated devices,
+
+38
+00:02:38,341 --> 00:02:40,350
+sometimes called GPS devices.
+
+39
+00:02:40,350 --> 00:02:43,730
+So you kind of see a picture
+of this GPS device.
+
+40
+00:02:43,730 --> 00:02:45,730
+People who go off-road, you know,
+
+41
+00:02:45,730 --> 00:02:49,700
+where you may not have cellphone signal
+as readily available, may still use that.
+
+42
+00:02:49,700 --> 00:02:53,950
+So people who do hiking and boating,
+they still use the dedicated devices.
+
+43
+00:02:53,950 --> 00:02:57,470
+And these devices are also being
+imbedded in many other areas.
+
+44
+00:02:57,470 --> 00:03:02,110
+So for example, many modern cars
+have a navigation system in their
+
+45
+00:03:02,110 --> 00:03:04,710
+instrument board and
+people use that, okay.
+
+46
+00:03:04,710 --> 00:03:06,844
+So you probably know that, you know,
+
+47
+00:03:06,844 --> 00:03:11,471
+using these devices, you can very
+easily find routes and locations, okay.
+
+48
+00:03:11,471 --> 00:03:14,620
+Also another platform is World Wide Web.
+
+49
+00:03:14,620 --> 00:03:18,175
+So beginning mid 90s,
+you have services, such as MapQuest.
+
+50
+00:03:18,175 --> 00:03:21,200
+And in the last decade,
+you have Google Maps.
+
+51
+00:03:21,200 --> 00:03:23,870
+So you could actually from
+your desktop computer or
+
+52
+00:03:23,870 --> 00:03:29,370
+tablet, you know, go onto World Wide Web
+and also do routing, okay.
+
+53
+00:03:29,370 --> 00:03:31,620
+So these things tell us
+many different things.
+
+54
+00:03:31,620 --> 00:03:34,550
+So first, you know, if you are in a new
+place and you just want to see what's
+
+55
+00:03:34,550 --> 00:03:38,780
+around you, they can display a map
+around the current location.
+
+56
+00:03:38,780 --> 00:03:42,740
+And they can also compute inner distance.
+
+57
+00:03:42,740 --> 00:03:46,500
+They can find you routes to
+a destination and so on, okay.
+
+58
+00:03:46,500 --> 00:03:50,990
+So navigation systems are often built
+around what we call spatial networks.
+
+59
+00:03:50,990 --> 00:03:54,280
+For example, in these cases we
+are looking at road networks.
+
+60
+00:03:54,280 --> 00:03:57,470
+But you could also use public
+transportation, such as train and
+
+61
+00:03:57,470 --> 00:04:00,092
+so on and find routes across those, okay.
+
+62
+00:04:00,092 --> 00:04:01,530
+All right, so
+
+63
+00:04:01,530 --> 00:04:06,210
+let's let's look at another category
+of application, which is very similar.
+
+64
+00:04:06,210 --> 00:04:10,360
+So broadly, what we saw in navigation
+system audio smartphone app
+
+65
+00:04:10,360 --> 00:04:11,470
+are all, you know,
+
+66
+00:04:11,470 --> 00:04:16,670
+part of a general category of services
+called Location Based Services, okay.
+
+67
+00:04:16,670 --> 00:04:18,850
+So within Location Based Services,
+
+68
+00:04:18,850 --> 00:04:21,560
+there are many different kinds of
+questions that can be answered.
+
+69
+00:04:21,560 --> 00:04:25,052
+So very first question is,
+where am I, okay.
+
+70
+00:04:25,052 --> 00:04:28,824
+In outdoor world,
+one can get that through GPS, but
+
+71
+00:04:28,824 --> 00:04:31,749
+indoor there are other kind of sensors.
+
+72
+00:04:31,749 --> 00:04:33,910
+Okay, if you are you know,
+in tunnel and so
+
+73
+00:04:33,910 --> 00:04:36,980
+on, they're may be different
+sensors that tell you that.
+
+74
+00:04:36,980 --> 00:04:39,110
+But there is a very simple
+software interface.
+
+75
+00:04:39,110 --> 00:04:42,680
+So using a simple function call,
+we can find the location.
+
+76
+00:04:42,680 --> 00:04:45,670
+And these locations
+come in multiple forms.
+
+77
+00:04:45,670 --> 00:04:50,390
+So most of us are used to symbolic
+place names, so a street address.
+
+78
+00:04:50,390 --> 00:04:53,740
+The computer science building in
+the University of Minnesota may have
+
+79
+00:04:53,740 --> 00:04:58,550
+a street address such as 200 Union Street,
+Southeast Minneapolis, Minnesota 55455.
+
+80
+00:04:58,550 --> 00:05:04,760
+Or you may have another symbolic name
+such as Mall of America and so on.
+
+81
+00:05:04,760 --> 00:05:07,650
+But there is anoth, a different
+system which is numerical system.
+
+82
+00:05:08,850 --> 00:05:12,940
+So these symbolic street addresses can
+be converted to numerical systems,
+
+83
+00:05:12,940 --> 00:05:14,680
+such as latitude, longitude.
+
+84
+00:05:14,680 --> 00:05:19,750
+So, if you are Goog, using Google Earth
+web service, you will often see that.
+
+85
+00:05:19,750 --> 00:05:22,410
+And also if you have seen
+the readings from your GPS, they
+
+86
+00:05:22,410 --> 00:05:27,420
+often start their life in this numerical
+form, latitude, longitude as an example.
+
+87
+00:05:27,420 --> 00:05:31,140
+So these services also allow you to
+translate between symbolic form,
+
+88
+00:05:31,140 --> 00:05:35,940
+such as street address and numerical form,
+and that service is called Geocoding.
+
+89
+00:05:35,940 --> 00:05:37,520
+You could also go other way.
+
+90
+00:05:37,520 --> 00:05:39,550
+So if you just have a latitude,
+
+91
+00:05:39,550 --> 00:05:44,600
+longitude, you could ask then symbolic
+place name for that particular place.
+
+92
+00:05:44,600 --> 00:05:48,000
+Maybe it's a well known point
+of interest or a city, okay.
+
+93
+00:05:48,000 --> 00:05:52,460
+A second category of service is
+broadly called directory service wh,
+
+94
+00:05:52,460 --> 00:05:54,430
+where you can ask what's around me.
+
+95
+00:05:54,430 --> 00:05:59,164
+So it could be as simple as asking for
+nearest instance of a service.
+
+96
+00:05:59,164 --> 00:06:03,060
+Let's say, you want to locate a doctor or
+clinic, you can go and ask for
+
+97
+00:06:03,060 --> 00:06:08,210
+nearest clinic from your current location,
+or a particular location of choice, okay.
+
+98
+00:06:08,210 --> 00:06:12,327
+You can ask for a restaurant or,
+you know, taxi and so on.
+
+99
+00:06:12,327 --> 00:06:15,255
+In addition,
+you could also ask a range query so
+
+100
+00:06:15,255 --> 00:06:20,234
+you could essentially say, well, if I am
+willing to walk a mile along the roads or
+
+101
+00:06:20,234 --> 00:06:24,139
+drive a mile what are the instances
+of banks within a mile.
+
+102
+00:06:24,139 --> 00:06:27,500
+And you can then choose the ones
+which is most convenient, okay.
+
+103
+00:06:27,500 --> 00:06:29,389
+And the last part of this is route okay,
+
+104
+00:06:29,389 --> 00:06:31,633
+which you have seen in
+navigation quite a bit.
+
+105
+00:06:31,633 --> 00:06:35,190
+Once you have selected an instance of
+a service, you can ask how do I get
+
+106
+00:06:35,190 --> 00:06:39,520
+there either walking or driving or through
+public transportation and so on, okay.
+
+107
+00:06:39,520 --> 00:06:43,390
+And location based services as
+a segment has been growing quite a bit.
+
+108
+00:06:43,390 --> 00:06:47,270
+Besides the consumer application there
+are many, many business applications where
+
+109
+00:06:47,270 --> 00:06:50,060
+businesses ask questions
+of their own interests.
+
+110
+00:06:50,060 --> 00:06:55,170
+And I will show some of those very
+soon under network analysis, okay.
+
+111
+00:06:55,170 --> 00:06:57,232
+Okay, now going beyond the,
+
+112
+00:06:57,232 --> 00:07:01,810
+you know, the current consumer services
+such as location based services.
+
+113
+00:07:01,810 --> 00:07:06,980
+You can ask who else in the society
+cares about spatial networks and
+
+114
+00:07:06,980 --> 00:07:10,200
+the key thing to note,
+which is what this slide is telling you.
+
+115
+00:07:10,200 --> 00:07:13,690
+Is that if you are in any urban area,
+you know, there are many,
+
+116
+00:07:13,690 --> 00:07:16,580
+many very critical spatial
+networks of interest, okay.
+
+117
+00:07:16,580 --> 00:07:20,150
+So, this is actually showing you critical
+infrastructure listed by Department of
+
+118
+00:07:20,150 --> 00:07:23,600
+Homeland Security, and
+let me point out some of them, okay.
+
+119
+00:07:23,600 --> 00:07:27,130
+Very first one was transportation,
+which is what we had been talking about so
+
+120
+00:07:27,130 --> 00:07:28,340
+far but, you know.
+
+121
+00:07:28,340 --> 00:07:32,310
+Next, you can go look at energy,
+if you think about electricity supply.
+
+122
+00:07:32,310 --> 00:07:36,210
+Okay, the electricity is carried through
+different electricity network from
+
+123
+00:07:36,210 --> 00:07:38,660
+the generation capacity to your home.
+
+124
+00:07:38,660 --> 00:07:41,630
+And again, you know, people have
+to keep track of that network for
+
+125
+00:07:41,630 --> 00:07:43,070
+many different reasons.
+
+126
+00:07:43,070 --> 00:07:46,210
+One of which is to protect
+against adversaries, all right.
+
+127
+00:07:46,210 --> 00:07:49,700
+Or if, you know, certain fault happens,
+if there was a storm and power lines went
+
+128
+00:07:49,700 --> 00:07:54,560
+down, they still need to track them on
+geography and go repair them, okay.
+
+129
+00:07:54,560 --> 00:07:59,200
+So, you know, there are similar networks
+for gas, the cooking gas that comes to
+
+130
+00:07:59,200 --> 00:08:02,360
+most houses again,
+comes through a network of pipelines.
+
+131
+00:08:02,360 --> 00:08:04,489
+Oil is transported often
+through pipelines.
+
+132
+00:08:05,750 --> 00:08:07,641
+Another network is water, okay.
+
+133
+00:08:07,641 --> 00:08:11,040
+In most urban areas,
+the water is piped, right.
+
+134
+00:08:11,040 --> 00:08:13,211
+So there is a central
+place where water tank or
+
+135
+00:08:13,211 --> 00:08:16,850
+water is located and
+then it comes through pipes to all homes.
+
+136
+00:08:16,850 --> 00:08:20,230
+Even broader the, you know,
+there are river networks and so on.
+
+137
+00:08:20,230 --> 00:08:23,190
+So, this water flows along different
+networks that people have to monitor.
+
+138
+00:08:24,390 --> 00:08:27,530
+One last example, which many of
+us relate to is communication.
+
+139
+00:08:27,530 --> 00:08:31,190
+We all use internet,
+which is another kind of spatial network.
+
+140
+00:08:31,190 --> 00:08:35,430
+In past, people were not paying attention
+to the locations of these switches.
+
+141
+00:08:35,430 --> 00:08:38,470
+But now,
+there is a lot more awareness of that.
+
+142
+00:08:38,470 --> 00:08:42,800
+And particularly for cellphone, which can
+move around if you want to tap internet.
+
+143
+00:08:42,800 --> 00:08:45,670
+Then, you know, your internet companies
+have to keep track of where it is and
+
+144
+00:08:45,670 --> 00:08:48,910
+route things properly and
+geography plays a role, and so on.
+
+145
+00:08:48,910 --> 00:08:51,610
+So essentially, if you are in
+an urban setting, there are lots and
+
+146
+00:08:51,610 --> 00:08:54,400
+lots of these spatial networks
+which are of interest.
+
+147
+00:08:54,400 --> 00:08:57,462
+And people, you know,
+use them in different ways,
+
+148
+00:08:57,462 --> 00:08:59,489
+ask different questions, okay.
+
+149
+00:08:59,489 --> 00:09:03,560
+All right so, you know so
+there are many societal applications.
+
+150
+00:09:03,560 --> 00:09:06,470
+Now the big question is, you know,
+do we already know enough?
+
+151
+00:09:06,470 --> 00:09:10,922
+You know, we had a whole week on spatial
+query, and we saw lots of spatial,
+
+152
+00:09:10,922 --> 00:09:14,750
+you know, data types and
+different kind of querying in SQL.
+
+153
+00:09:14,750 --> 00:09:16,430
+And the big question is,
+
+154
+00:09:16,430 --> 00:09:19,380
+you know, does that already
+cover all this spatial network?
+
+155
+00:09:19,380 --> 00:09:23,200
+Do we really need to spend another
+week learning new computational ideas
+
+156
+00:09:23,200 --> 00:09:24,180
+here, okay.
+
+157
+00:09:24,180 --> 00:09:27,330
+So this slide essentially telling
+you that, what we learned so
+
+158
+00:09:27,330 --> 00:09:28,910
+far is not adequate, okay.
+
+159
+00:09:28,910 --> 00:09:30,640
+So first, you remember, you know,
+
+160
+00:09:30,640 --> 00:09:36,950
+we learned OGIS Simple Feature Types which
+provided us points, linestrings, polygons.
+
+161
+00:09:36,950 --> 00:09:40,380
+So, key thing to notice is that
+those data types model geometry.
+
+162
+00:09:40,380 --> 00:09:43,540
+They do not model street
+network very well, where you
+
+163
+00:09:43,540 --> 00:09:48,015
+need slightly different data types, you
+know, as the mathematical model of graphs.
+
+164
+00:09:48,015 --> 00:09:52,030
+Okay, if you want to compute shortest
+path, then you need those operators and
+
+165
+00:09:52,030 --> 00:09:54,740
+a new data type called graphs
+which are missing, okay.
+
+166
+00:09:54,740 --> 00:09:59,060
+Same way in SQL, you know,
+we learn joins and many different things.
+
+167
+00:09:59,060 --> 00:10:02,830
+But you have to realize that
+shortest paths cannot easily be
+
+168
+00:10:02,830 --> 00:10:05,400
+expressed using these joins, okay.
+
+169
+00:10:05,400 --> 00:10:09,360
+They belong to a special category of
+operations called transitive closure.
+
+170
+00:10:09,360 --> 00:10:13,844
+And there is a well known critical result
+that your basic relational algebra or
+
+171
+00:10:13,844 --> 00:10:18,180
+basic SQL cannot expressive transitive
+closure set as shortest path.
+
+172
+00:10:18,180 --> 00:10:20,980
+And I will show you many other
+examples of that on the next slide.
+
+173
+00:10:22,200 --> 00:10:27,290
+Now there is some good news in SQL real,
+starting SQL3 recursion was added,
+
+174
+00:10:27,290 --> 00:10:30,330
+which can allow you to express
+some of these queries.
+
+175
+00:10:30,330 --> 00:10:33,760
+Of course, the performance is still
+something people are working on,
+
+176
+00:10:33,760 --> 00:10:36,098
+but you can express some of
+these queries there, okay.
+
+177
+00:10:36,098 --> 00:10:39,440
+So, let's go down and
+look at these network analysis queries.
+
+178
+00:10:39,440 --> 00:10:43,362
+And this is now giving you
+the business side of spatial network,
+
+179
+00:10:43,362 --> 00:10:46,204
+what many businesses do with this, okay.
+
+180
+00:10:46,204 --> 00:10:49,471
+So one part, you know, the first thing
+businesses do is very similar to
+
+181
+00:10:49,471 --> 00:10:52,060
+what consumers do, which is routing, okay.
+
+182
+00:10:52,060 --> 00:10:55,710
+So often times, you know, let's say,
+you know, a business has to ship some
+
+183
+00:10:55,710 --> 00:11:00,770
+item from a factory to a warehouse, and
+they want shortest path for that, okay.
+
+184
+00:11:00,770 --> 00:11:02,720
+So that is very simple.
+
+185
+00:11:02,720 --> 00:11:07,370
+So they just wanted to know how to get
+some items from factory to a warehouse.
+
+186
+00:11:07,370 --> 00:11:10,315
+But usually their queries
+are a little bit more complex,
+
+187
+00:11:10,315 --> 00:11:12,469
+which some of us might have experienced.
+
+188
+00:11:12,469 --> 00:11:13,212
+That, you know,
+
+189
+00:11:13,212 --> 00:11:16,560
+they might not have one destination,
+they have multiple destination, okay.
+
+190
+00:11:16,560 --> 00:11:19,360
+So these routes get a little
+more combinatory and
+
+191
+00:11:19,360 --> 00:11:22,830
+interesting, because you may also have
+to choose the order of destination.
+
+192
+00:11:22,830 --> 00:11:27,215
+So again, try to imagine, you know you may
+have a warehouse eh, store like Sears or
+
+193
+00:11:27,215 --> 00:11:31,810
+Walmart, where many people came and they
+ordered some appliances, like washers or
+
+194
+00:11:31,810 --> 00:11:33,120
+dryers, right.
+
+195
+00:11:33,120 --> 00:11:37,660
+Next, you know, morning, the drivers
+basically get a collection of five or six
+
+196
+00:11:37,660 --> 00:11:41,740
+of these deliveries, and they have to go
+and deliver that within couple of hours.
+
+197
+00:11:41,740 --> 00:11:44,530
+So it's important to know in which
+order these should be delivered and
+
+198
+00:11:44,530 --> 00:11:45,270
+what route, okay.
+
+199
+00:11:45,270 --> 00:11:47,647
+So this is a very typical query.
+
+200
+00:11:47,647 --> 00:11:51,040
+Another query is in terms of allocation.
+
+201
+00:11:51,040 --> 00:11:53,462
+So many businesses has many,
+many stores, right.
+
+202
+00:11:53,462 --> 00:11:57,457
+If you think about a post office, it has
+many different locations, right, and
+
+203
+00:11:57,457 --> 00:11:59,170
+then they have many customers.
+
+204
+00:11:59,170 --> 00:12:03,556
+So a big question for them is to allocate
+customers to service centers, okay.
+
+205
+00:12:03,556 --> 00:12:07,840
+And in, you know, reverse of this
+is to designate service areas for
+
+206
+00:12:07,840 --> 00:12:09,930
+each service center, okay.
+
+207
+00:12:09,930 --> 00:12:13,330
+And finally, there is a third
+question called site selection.
+
+208
+00:12:13,330 --> 00:12:17,130
+So let's say, they wanted to add a new
+service center because customers have now
+
+209
+00:12:17,130 --> 00:12:19,260
+grown in a certain area.
+
+210
+00:12:19,260 --> 00:12:23,340
+Then, you know, they want to essentially
+ask which are the best locations.
+
+211
+00:12:23,340 --> 00:12:27,122
+So that you might minimize distance to
+the new customers to solve that, or
+
+212
+00:12:27,122 --> 00:12:29,502
+you might minimize some other things,
+okay.
+
+213
+00:12:29,502 --> 00:12:35,367
+Now again, you know, this list of queries,
+they all belong to this graph-based
+
+214
+00:12:35,367 --> 00:12:40,820
+questions, and almost all of them
+include transitive closure recursion.
+
+215
+00:12:40,820 --> 00:12:43,840
+So expressing these using simple joins,
+select and
+
+216
+00:12:43,840 --> 00:12:48,050
+project, what we learn in spatial
+querying before, is not possible.
+
+217
+00:12:48,050 --> 00:12:50,130
+So we need to learn new things.
+
+218
+00:12:50,130 --> 00:12:53,850
+So as we go along in this chapter,
+we'll learn about graph data types and
+
+219
+00:12:53,850 --> 00:12:57,060
+the algorithms and
+how we handle these kind of queries, okay.
+
+220
+00:12:57,060 --> 00:12:58,340
+So again, to sum up, you know,
+
+221
+00:12:58,340 --> 00:13:02,140
+we talked about spatial networks,
+their societal importance.
+
+222
+00:13:02,140 --> 00:13:03,000
+Who uses them and
+
+223
+00:13:03,000 --> 00:13:06,910
+we saw consumer applications, business
+application, government application.
+
+224
+00:13:06,910 --> 00:13:10,240
+And we also discussed the limitations
+of spatial querying in
+
+225
+00:13:10,240 --> 00:13:12,350
+supporting such questions.
+
+226
+00:13:12,350 --> 00:13:13,610
+And as the chapter goes by,
+
+227
+00:13:13,610 --> 00:13:17,320
+we'll come and learn new things
+to represent these queries.
+
+228
+00:13:17,320 --> 00:13:19,865
+Thank you and I look forward to
+seeing you in the next segment.
+
+229
+00:13:19,865 --> 00:13:22,544
+[NOISE]
+

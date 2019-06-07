@@ -1,0 +1,570 @@
+1
+00:00:00,370 --> 00:00:03,370
+Welcome back to the discussion
+of spatial networks.
+
+2
+00:00:03,370 --> 00:00:07,300
+In last video, we were looking
+at physical data model level.
+
+3
+00:00:07,300 --> 00:00:12,210
+This video, we'll continue that discussion
+and go from data structures to algorithms.
+
+4
+00:00:12,210 --> 00:00:15,160
+Broadly, in database terms,
+the query processing.
+
+5
+00:00:15,160 --> 00:00:16,800
+So at the end of this video,
+
+6
+00:00:16,800 --> 00:00:22,380
+we will learn a little bit about query
+processing mindset for managing graphs.
+
+7
+00:00:22,380 --> 00:00:24,430
+In particular, look for
+the building blocks.
+
+8
+00:00:24,430 --> 00:00:27,680
+The query processing cannot optimize for
+everything, but they try to
+
+9
+00:00:27,680 --> 00:00:32,660
+find common building blocks which are
+frequently used, and optimize for that.
+
+10
+00:00:32,660 --> 00:00:35,780
+And then we'll go into further depth for
+one building block
+
+11
+00:00:35,780 --> 00:00:38,989
+called connectivity query, all right,
+and show you two algorithms.
+
+12
+00:00:40,300 --> 00:00:43,090
+So again, you know, big picture,
+we are looking at Spatial Networks.
+
+13
+00:00:43,090 --> 00:00:45,600
+We saw a Conceptual Model,
+Logical Model, and
+
+14
+00:00:45,600 --> 00:00:49,430
+now we are into Physical Model, and in
+particular, we are looking at algorithms.
+
+15
+00:00:50,470 --> 00:00:51,440
+So let's first, you know,
+
+16
+00:00:51,440 --> 00:00:55,310
+put the query processing hat and
+try to see how databases think.
+
+17
+00:00:56,310 --> 00:00:59,600
+So one of the interesting part of
+databases is that they look at
+
+18
+00:00:59,600 --> 00:01:02,710
+the workload, and then,
+you know, across many,
+
+19
+00:01:02,710 --> 00:01:06,020
+many queries, they try to look for
+commonality, right?
+
+20
+00:01:06,020 --> 00:01:09,010
+If they can find a common building block,
+they optimize it
+
+21
+00:01:09,010 --> 00:01:13,200
+very well with multiple algorithms,
+data structures, and so on, right?
+
+22
+00:01:13,200 --> 00:01:15,350
+So the same thinking with networks,
+you know,
+
+23
+00:01:15,350 --> 00:01:19,170
+if we did that, then we do look for
+building blocks.
+
+24
+00:01:19,170 --> 00:01:23,640
+For each building block, we'll put some
+algorithms, sometimes called strategies,
+
+25
+00:01:23,640 --> 00:01:28,400
+and then when a new query comes we'll
+decompose into building blocks and
+
+26
+00:01:28,400 --> 00:01:32,340
+then rank these algorithms and
+pick the most suitable one, okay.
+
+27
+00:01:32,340 --> 00:01:35,890
+This is sort of like, you know, if you
+drive automatic transmission car you just
+
+28
+00:01:35,890 --> 00:01:39,720
+put it in drive and the car picks
+whether it's first gear, second gear or
+
+29
+00:01:39,720 --> 00:01:43,910
+third gear based on the need and the same
+way databases are like automatic car.
+
+30
+00:01:43,910 --> 00:01:48,210
+Very different from a Java programming,
+where you have to pick algorithm, right?
+
+31
+00:01:48,210 --> 00:01:51,100
+Okay, so
+if we were to do this with graphs,
+
+32
+00:01:51,100 --> 00:01:55,720
+then people think of at least two
+common queries, one is connectivity.
+
+33
+00:01:55,720 --> 00:01:57,650
+So essentially, given a road map, or
+
+34
+00:01:57,650 --> 00:02:02,980
+a train network, we simply want to know
+whether we can reach point A from point B.
+
+35
+00:02:02,980 --> 00:02:05,780
+This may look very trivial to
+you because you might say,
+
+36
+00:02:05,780 --> 00:02:09,080
+well the network should be
+designed that way and many are.
+
+37
+00:02:09,080 --> 00:02:11,150
+But, you know,
+if you are in an island nation this,
+
+38
+00:02:11,150 --> 00:02:12,590
+you may have to think about it.
+
+39
+00:02:12,590 --> 00:02:16,150
+But, more importantly, there are other
+Spatial Networks like electric circuits.
+
+40
+00:02:16,150 --> 00:02:17,540
+So, if you think of the power grid and,
+
+41
+00:02:17,540 --> 00:02:21,080
+you know, there is an outage after
+a storm and this is an important query.
+
+42
+00:02:22,440 --> 00:02:25,150
+The other one you probably expected,
+shortest path; so
+
+43
+00:02:25,150 --> 00:02:27,680
+shortest path turns out
+to be a work horse.
+
+44
+00:02:27,680 --> 00:02:32,390
+Not only it's useful in itself, but
+it helps up with many other queries,
+
+45
+00:02:32,390 --> 00:02:37,200
+such as allocating customers to nearest
+service center and so on, okay?
+
+46
+00:02:37,200 --> 00:02:40,570
+So many times we think about essentially
+having multiple algorithm for
+
+47
+00:02:40,570 --> 00:02:41,860
+these building blocks.
+
+48
+00:02:41,860 --> 00:02:42,600
+So that, you know,
+
+49
+00:02:42,600 --> 00:02:46,630
+depending on the situation,
+we can have good performance, Okay?
+
+50
+00:02:46,630 --> 00:02:48,600
+So there are many algorithms, you know,
+
+51
+00:02:48,600 --> 00:02:52,350
+so many of you might have
+seen main memory algorithms.
+
+52
+00:02:52,350 --> 00:02:57,532
+For example, given that matrix or decency
+list representation, we can use algorithms
+
+53
+00:02:57,532 --> 00:03:03,340
+like depth first search or breadth first
+search to check the connectivity right.
+
+54
+00:03:03,340 --> 00:03:07,690
+And same thing for shortest paths some of
+you probably took a data structures and
+
+55
+00:03:07,690 --> 00:03:11,400
+algorithms course and you may have
+come across Dijkstra's shortest path
+
+56
+00:03:11,400 --> 00:03:16,540
+algorithm it's also thought in
+operations research geography and so on.
+
+57
+00:03:16,540 --> 00:03:20,510
+Those of you who might, you know, have
+taken artificial intelligence course might
+
+58
+00:03:20,510 --> 00:03:22,900
+have seen another algorithm called A-star,
+and
+
+59
+00:03:22,900 --> 00:03:26,700
+we will at least look at these
+two in our discussion, okay.
+
+60
+00:03:26,700 --> 00:03:30,410
+Now it turns out that, you know,
+if your data is primarily on disk, some of
+
+61
+00:03:30,410 --> 00:03:35,430
+these algorithms have to be adjusted for
+the higher cost, and in addition,
+
+62
+00:03:35,430 --> 00:03:39,080
+there are specialized algorithms,
+like Hierarchical routing, which tries to
+
+63
+00:03:39,080 --> 00:03:44,940
+look at only a part of the graph to
+reduce IU and still give the optimality.
+
+64
+00:03:44,940 --> 00:03:48,090
+And we'll try to see if
+we have time to go and
+
+65
+00:03:48,090 --> 00:03:50,900
+visit that, but the first,
+the main memory one are worth reviewing.
+
+66
+00:03:52,520 --> 00:03:57,150
+So also good news is, that SQL3, you know
+with the cursive statement has been in
+
+67
+00:03:57,150 --> 00:04:01,750
+place, and they have adopted some of
+these algorithms for use within SQL3.
+
+68
+00:04:01,750 --> 00:04:04,040
+So let's look at two algorithms for
+
+69
+00:04:04,040 --> 00:04:06,960
+one building block that's
+connectivity queried.
+
+70
+00:04:06,960 --> 00:04:10,840
+So in case of connectivity query,
+given a particular graph and a particular
+
+71
+00:04:10,840 --> 00:04:14,388
+start node, we want to list all of
+the nodes which are reachable from there.
+
+72
+00:04:14,388 --> 00:04:19,530
+And the used cases may be in a smart
+grid electricity network to see
+
+73
+00:04:19,530 --> 00:04:24,000
+whether power from a particular generating
+station can reach all the customers, or
+
+74
+00:04:24,000 --> 00:04:28,120
+in a road map after hurricane of flooding,
+we might want to see from a,
+
+75
+00:04:28,120 --> 00:04:30,740
+let's say relief supply
+distribution center, you know,
+
+76
+00:04:30,740 --> 00:04:36,560
+which particular people needing
+help can we serviced, okay.
+
+77
+00:04:36,560 --> 00:04:38,790
+So let's first look at Breadth
+first search, you know,
+
+78
+00:04:38,790 --> 00:04:40,950
+and suppose the starting node is one.
+
+79
+00:04:40,950 --> 00:04:45,760
+So in case of Breadth first search,
+we visit other nodes level by level.
+
+80
+00:04:45,760 --> 00:04:48,810
+So we first reach the nodes
+which are directly connected.
+
+81
+00:04:48,810 --> 00:04:50,400
+So from 1, nodes 2 and
+
+82
+00:04:50,400 --> 00:04:55,670
+4 can be reached first because
+there is a direct edge, right.
+
+83
+00:04:55,670 --> 00:04:56,910
+Once we have reached nodes 2 and 4,
+
+84
+00:04:56,910 --> 00:05:02,340
+then we try to visit the next set of nodes
+which are reachable within two edges.
+
+85
+00:05:02,340 --> 00:05:07,260
+So from node 2 we can reach node 3,
+and from 4 we can reach node 5.
+
+86
+00:05:07,260 --> 00:05:11,110
+So essentially, your traversals goes
+by level by level, starting with 1.
+
+87
+00:05:11,110 --> 00:05:14,550
+We first go to 2, 4, and then 3, 5, okay.
+
+88
+00:05:14,550 --> 00:05:17,740
+The order within level
+is not really dictated.
+
+89
+00:05:17,740 --> 00:05:19,130
+You can visit them in any order.
+
+90
+00:05:20,730 --> 00:05:23,890
+The second algorithm is Depth
+first search, and in this case,
+
+91
+00:05:23,890 --> 00:05:29,290
+we essentially follow one path till we
+hit a dead end and then trace back.
+
+92
+00:05:29,290 --> 00:05:29,950
+Something, you know,
+
+93
+00:05:29,950 --> 00:05:34,790
+you might have experienced in
+solving a maze kind of puzzle, okay.
+
+94
+00:05:34,790 --> 00:05:38,000
+So, let's say we start with node 1, and
+
+95
+00:05:38,000 --> 00:05:41,210
+let's suppose we go down node 2,
+the first edge.
+
+96
+00:05:41,210 --> 00:05:45,530
+Then once we added node 2,
+we might visit something whichever by 2,
+
+97
+00:05:45,530 --> 00:05:48,310
+which might be node 3 or node 4.
+
+98
+00:05:48,310 --> 00:05:52,180
+Let's suppose you have end down node 3,
+right, and node 3 is a dead end.
+
+99
+00:05:52,180 --> 00:05:55,080
+We can't go anywhere further,
+so we go back to node 2, and
+
+100
+00:05:55,080 --> 00:05:57,490
+we say is there anywhere
+else we can reach?
+
+101
+00:05:57,490 --> 00:06:00,690
+And we see node 4 right,
+and then we continue on and
+
+102
+00:06:00,690 --> 00:06:03,990
+from 4 we can reach 5 and
+then we backtrack, okay.
+
+103
+00:06:03,990 --> 00:06:05,340
+So the order is different.
+
+104
+00:06:05,340 --> 00:06:08,540
+So again give you the visual contrast,
+let's compare these two
+
+105
+00:06:08,540 --> 00:06:11,520
+algorithms iteration by
+iteration in the order of visit.
+
+106
+00:06:11,520 --> 00:06:14,460
+So suppose we started with node 1.
+
+107
+00:06:14,460 --> 00:06:19,512
+In the first iteration both algorithms
+may go to a common node, right,
+
+108
+00:06:19,512 --> 00:06:22,720
+which is node 2,
+because those are reachable by one edge.
+
+109
+00:06:22,720 --> 00:06:25,590
+But in the next iteration you
+start to see the difference.
+
+110
+00:06:25,590 --> 00:06:30,200
+The, the Breadth first search goes to node
+4 which is one edge away, it prefers that,
+
+111
+00:06:30,200 --> 00:06:34,430
+whereas Depth first search is now going
+to node 3, which may be two edges away.
+
+112
+00:06:34,430 --> 00:06:38,810
+And then subsequent iteration again
+you will see the behavior change, and
+
+113
+00:06:38,810 --> 00:06:40,880
+you essentially see some
+differences between the two.
+
+114
+00:06:42,120 --> 00:06:45,510
+So with this we'll wrap up
+the discussion of basic introduction to
+
+115
+00:06:45,510 --> 00:06:49,030
+query processing and
+also algorithms for connectivity query.
+
+116
+00:06:49,030 --> 00:06:52,080
+When we come back in the next video,
+we'll look at two algorithms for
+
+117
+00:06:52,080 --> 00:06:53,680
+shortest pathway.
+
+118
+00:06:53,680 --> 00:06:55,597
+Thank you, looking forward
+to seeing you soon [SOUND].
+

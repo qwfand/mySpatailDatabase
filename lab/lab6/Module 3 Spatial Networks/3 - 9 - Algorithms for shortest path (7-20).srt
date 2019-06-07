@@ -1,0 +1,702 @@
+1
+00:00:00,450 --> 00:00:05,630
+Welcome back to the discussion of spatial
+network query processing and algorithms.
+
+2
+00:00:05,630 --> 00:00:08,790
+In the last video, we saw the big
+picture of query processing.
+
+3
+00:00:08,790 --> 00:00:11,430
+Databases often like to
+have a few building blocks,
+
+4
+00:00:11,430 --> 00:00:13,150
+which are frequently used.
+
+5
+00:00:13,150 --> 00:00:15,960
+And for each building block,
+they like to have multiple algorithms, so
+
+6
+00:00:15,960 --> 00:00:17,200
+that they can pick and choose.
+
+7
+00:00:18,410 --> 00:00:21,880
+In the last module, we also saw
+algorithms for connectivity query.
+
+8
+00:00:21,880 --> 00:00:26,720
+And in this module, we will try to look at
+two algorithms for shortest path queries.
+
+9
+00:00:26,720 --> 00:00:30,880
+So at the end of this module, we should
+be able to name those two algorithms and
+
+10
+00:00:30,880 --> 00:00:32,890
+also compare their, you know, behavior.
+
+11
+00:00:34,480 --> 00:00:36,240
+So in terms of shortest path, you know,
+
+12
+00:00:36,240 --> 00:00:39,030
+the basic common algorithm
+is an iterative algorithm.
+
+13
+00:00:39,030 --> 00:00:44,180
+It goes into a loop, and in,
+in each iteration of the loop,
+
+14
+00:00:44,180 --> 00:00:47,470
+it essentially looks for
+most promising direction.
+
+15
+00:00:47,470 --> 00:00:50,250
+And so it keeps a set of descent
+which we have visited so
+
+16
+00:00:50,250 --> 00:00:52,810
+far, and it picks the most promising one.
+
+17
+00:00:53,810 --> 00:00:57,040
+But the ranking differs
+between the algorithms.
+
+18
+00:00:57,040 --> 00:00:59,170
+So if we started with the older algorithm,
+
+19
+00:00:59,170 --> 00:01:05,330
+Dijkstra's Algorithm then it picks
+up the closest descendent to self.
+
+20
+00:01:05,330 --> 00:01:06,845
+It may not look intuitive, but
+
+21
+00:01:06,845 --> 00:01:09,770
+its a general algorithm it works in many,
+many graphs.
+
+22
+00:01:09,770 --> 00:01:10,700
+Okay?
+
+23
+00:01:10,700 --> 00:01:14,230
+Now A star which came from artificial
+intelligence, you know, may look a little
+
+24
+00:01:14,230 --> 00:01:18,890
+smarter and it tries to pick a descendent
+which is closest to the destination.
+
+25
+00:01:18,890 --> 00:01:19,550
+Right?
+
+26
+00:01:19,550 --> 00:01:22,170
+And you might wonder why Dijkstra do that?
+
+27
+00:01:22,170 --> 00:01:26,270
+And the answer is, you know, in some sense
+its not that easy to figure out which
+
+28
+00:01:26,270 --> 00:01:30,430
+descendent is closest to the destination
+because the future is not known.
+
+29
+00:01:30,430 --> 00:01:34,600
+We don't know if, you know,
+there are the shortest path or
+
+30
+00:01:34,600 --> 00:01:36,720
+the most direct paths may be broken.
+
+31
+00:01:36,720 --> 00:01:39,110
+Right?
+You may have to go around an obstacle.
+
+32
+00:01:39,110 --> 00:01:43,180
+So in case of A star, you need some
+heuristic to kind of do this focusing and
+
+33
+00:01:43,180 --> 00:01:45,070
+that becomes very domain dependent.
+
+34
+00:01:45,070 --> 00:01:48,140
+Fortunately for us,
+such heuristics are easy for
+
+35
+00:01:48,140 --> 00:01:52,170
+road maps, because they are embedded
+in Euclidean space and straight line
+
+36
+00:01:52,170 --> 00:01:55,871
+distance estimations has the right
+set of property to make A star shine.
+
+37
+00:01:56,960 --> 00:02:00,140
+But in general, if you are in some
+other networks, like electricity
+
+38
+00:02:00,140 --> 00:02:05,040
+distribution and so on you know, it might
+be worthwhile to look at both algorithms.
+
+39
+00:02:05,040 --> 00:02:05,540
+Okay.
+
+40
+00:02:06,790 --> 00:02:10,740
+So essentially, you know, we looked at
+that the most promising descendent and
+
+41
+00:02:10,740 --> 00:02:14,780
+then once we visited that descendent,
+we can update the path to that descendent.
+
+42
+00:02:14,780 --> 00:02:16,650
+And in addition, you know,
+
+43
+00:02:16,650 --> 00:02:20,160
+we may find an additional descendent
+which our Dijkstra will reach from there.
+
+44
+00:02:20,160 --> 00:02:22,030
+Okay.
+So we keep looping,
+
+45
+00:02:22,030 --> 00:02:24,350
+till the destination node is expanded.
+
+46
+00:02:24,350 --> 00:02:26,660
+Till that becomes the most promising node,
+and
+
+47
+00:02:26,660 --> 00:02:29,398
+at that time, we have found shortest path.
+
+48
+00:02:29,398 --> 00:02:30,990
+So, let's first look at the behavior, and
+
+49
+00:02:30,990 --> 00:02:36,190
+we can later on look at the exemption or
+why this is correct and so on.
+
+50
+00:02:36,190 --> 00:02:39,690
+So, so we are going to show
+you a small animation.
+
+51
+00:02:39,690 --> 00:02:43,510
+Let's supposed we have this very
+simple graphic, a greedy graph.
+
+52
+00:02:43,510 --> 00:02:44,940
+Again, not really unrealistic.
+
+53
+00:02:44,940 --> 00:02:48,680
+If you live in Manhattan or some other
+downtowns there are grids like this.
+
+54
+00:02:48,680 --> 00:02:51,300
+Maybe a few more is
+likely we're not showing.
+
+55
+00:02:51,300 --> 00:02:54,020
+And in this, suppose we
+are starting from this red node,
+
+56
+00:02:54,020 --> 00:02:57,806
+which is B and trying to go to this
+upper right node, the green one.
+
+57
+00:02:57,806 --> 00:02:58,341
+Okay.
+So
+
+58
+00:02:58,341 --> 00:03:02,860
+we are going to show you the behavior
+of Dijkstra's and A star side by side.
+
+59
+00:03:02,860 --> 00:03:06,190
+So in the first iteration,
+they behave very similarly.
+
+60
+00:03:06,190 --> 00:03:09,140
+They both start from the red node and
+they list their neighbors.
+
+61
+00:03:09,140 --> 00:03:10,180
+There are three neighbors here.
+
+62
+00:03:10,180 --> 00:03:13,230
+And at A star only only two
+are shown as yellow, but
+
+63
+00:03:13,230 --> 00:03:15,780
+it also will look at this lower left one.
+
+64
+00:03:15,780 --> 00:03:18,480
+So all immediate neighbors are considered,
+okay?
+
+65
+00:03:18,480 --> 00:03:21,030
+The behavior changes
+in the next iteration.
+
+66
+00:03:21,030 --> 00:03:24,010
+Now if you think about, you know,
+what Dijkstra's will do,
+
+67
+00:03:24,010 --> 00:03:28,070
+it's going to pick one of these neighbors
+which is closest to the start node.
+
+68
+00:03:28,070 --> 00:03:31,030
+And in this case,
+they're all pretty much tight.
+
+69
+00:03:31,030 --> 00:03:33,930
+You can pick any one of them
+in the case of Dijkstra's.
+
+70
+00:03:33,930 --> 00:03:39,130
+But in case of a star, these two neighbors
+are closer to destination the green one,
+
+71
+00:03:39,130 --> 00:03:41,280
+than this particular lower left one.
+
+72
+00:03:41,280 --> 00:03:41,870
+Right?
+So,
+
+73
+00:03:41,870 --> 00:03:45,110
+A star is going to pick one of these two,
+it will never pick that.
+
+74
+00:03:45,110 --> 00:03:45,910
+Okay?
+
+75
+00:03:45,910 --> 00:03:50,060
+So, once they have made their choices,
+they will visit Dartnord and
+
+76
+00:03:50,060 --> 00:03:51,480
+Ardmore neighbors.
+
+77
+00:03:51,480 --> 00:03:54,560
+So in case of A star, the only thing
+that will be added is this node
+
+78
+00:03:54,560 --> 00:03:57,420
+because that's what, you know,
+it's connected to here.
+
+79
+00:03:57,420 --> 00:03:59,990
+And, you know based on that,
+
+80
+00:03:59,990 --> 00:04:03,020
+this isn't added because also
+closest to the destination.
+
+81
+00:04:03,020 --> 00:04:05,650
+So these notes are also
+connected to other nodes, but
+
+82
+00:04:05,650 --> 00:04:08,540
+if you look at the total distance,
+this one will win out.
+
+83
+00:04:08,540 --> 00:04:09,340
+Okay?
+
+84
+00:04:09,340 --> 00:04:12,360
+Where as Dijkstra can only
+see the distance to self,
+
+85
+00:04:12,360 --> 00:04:15,690
+it doesn't know which of these
+nodes is closest to destination.
+
+86
+00:04:15,690 --> 00:04:19,170
+So it can pick any one of them, so
+we have shown all of them in yellow.
+
+87
+00:04:19,170 --> 00:04:20,310
+Okay.
+
+88
+00:04:20,310 --> 00:04:21,985
+The next iteration, it continues.
+
+89
+00:04:21,985 --> 00:04:23,910
+A star again, you see, is focused.
+
+90
+00:04:23,910 --> 00:04:27,140
+It's picking nodes which
+are closer to the destination,
+
+91
+00:04:27,140 --> 00:04:30,700
+whereas Dijkstra is kind of going
+in a breadth-first search manner.
+
+92
+00:04:30,700 --> 00:04:33,368
+So you go further, you know,
+another iteration, and
+
+93
+00:04:33,368 --> 00:04:36,630
+now A star has actually
+reached the destination.
+
+94
+00:04:36,630 --> 00:04:40,370
+Having expanded a small set
+of nodes which all seem to be
+
+95
+00:04:40,370 --> 00:04:43,010
+somewhere near the straight line path.
+
+96
+00:04:43,010 --> 00:04:44,090
+Okay?
+
+97
+00:04:44,090 --> 00:04:46,225
+Whereas Dijkstra's still is ongoing and
+
+98
+00:04:46,225 --> 00:04:49,763
+it will have few [INAUDIBLE] till it
+reaches, and you kind of see that it
+
+99
+00:04:49,763 --> 00:04:53,500
+has a more breadth-first search
+behavior it looks at lot more nodes.
+
+100
+00:04:53,500 --> 00:04:54,000
+Okay?
+
+101
+00:04:55,050 --> 00:04:57,030
+Okay.
+So once we have this sense, you know,
+
+102
+00:04:57,030 --> 00:04:59,720
+we can also try to quickly look at
+
+103
+00:04:59,720 --> 00:05:03,190
+the formal properties which
+makes these algorithms work.
+
+104
+00:05:03,190 --> 00:05:03,970
+Okay.
+
+105
+00:05:03,970 --> 00:05:08,790
+So both of these algorithm, actually
+follow a very general algorithm design
+
+106
+00:05:08,790 --> 00:05:11,450
+paradigm in computer computer
+science called Dynamic Program.
+
+107
+00:05:11,450 --> 00:05:14,450
+You know, some of you probably
+took algorithms course and
+
+108
+00:05:14,450 --> 00:05:15,830
+you probably know that paradigm.
+
+109
+00:05:15,830 --> 00:05:16,520
+Okay.
+
+110
+00:05:16,520 --> 00:05:20,030
+A special example of that
+paradigm is Sub-path optimality.
+
+111
+00:05:20,030 --> 00:05:22,040
+So essentially, you know, road maps and
+
+112
+00:05:22,040 --> 00:05:25,350
+other transportation network,
+they have some very nice properties.
+
+113
+00:05:25,350 --> 00:05:30,020
+They basically have the simple property
+where edge costs are positive.
+
+114
+00:05:30,020 --> 00:05:32,090
+Okay.
+You never have a negative distance.
+
+115
+00:05:32,090 --> 00:05:35,150
+They're additive, and they are also fixed.
+
+116
+00:05:35,150 --> 00:05:36,850
+Okay.
+So we are ignoring time variation all
+
+117
+00:05:36,850 --> 00:05:37,960
+together here.
+
+118
+00:05:37,960 --> 00:05:39,120
+So under these properties,
+
+119
+00:05:39,120 --> 00:05:43,970
+essentially, if I look at a optimal
+path from node A to B, and let's say,
+
+120
+00:05:43,970 --> 00:05:49,040
+it goes through C, then the sub-path
+going from A to C will also be optimal.
+
+121
+00:05:49,040 --> 00:05:51,340
+And that's essentially underlies,
+you know,
+
+122
+00:05:51,340 --> 00:05:54,420
+the basic behavior of this algorithm,
+it guarantees optimality.
+
+123
+00:05:54,420 --> 00:05:55,190
+Okay.
+
+124
+00:05:55,190 --> 00:05:59,030
+In addition to this, for
+A star you need one other property.
+
+125
+00:05:59,030 --> 00:06:00,750
+Remember, we have to guess, you know,
+
+126
+00:06:00,750 --> 00:06:04,890
+which, the, you know,
+descendent is closest to destination, so
+
+127
+00:06:04,890 --> 00:06:09,260
+this guess usually comes in the form
+of a heuristic mathematical function.
+
+128
+00:06:09,260 --> 00:06:11,780
+For example,
+in Euclidean space like road maps,
+
+129
+00:06:11,780 --> 00:06:15,310
+you can estimate straight line
+distance to be your guess.
+
+130
+00:06:15,310 --> 00:06:15,900
+Okay.
+
+131
+00:06:15,900 --> 00:06:19,330
+And that straight line distance has this
+nice property of being under estimate.
+
+132
+00:06:19,330 --> 00:06:22,440
+Because you can never beat
+straight line on a planar surface.
+
+133
+00:06:22,440 --> 00:06:23,230
+Right.
+
+134
+00:06:23,230 --> 00:06:27,300
+And you need that kind of a property for
+A star to give you the correct solution.
+
+135
+00:06:27,300 --> 00:06:31,590
+And designing heuristic functions takes
+effort, and they depend on the domain.
+
+136
+00:06:31,590 --> 00:06:34,800
+But fortunately, for spacial network the
+straight line distance does pretty well.
+
+137
+00:06:34,800 --> 00:06:35,300
+Okay.
+
+138
+00:06:36,710 --> 00:06:38,902
+Great.
+So this hopefully gives you a sense of
+
+139
+00:06:38,902 --> 00:06:43,161
+two shortest path algorithms, A star and
+Dijkstra, they're both very popular.
+
+140
+00:06:43,161 --> 00:06:45,606
+But in addition,
+people have gone further and
+
+141
+00:06:45,606 --> 00:06:48,970
+tried to cue in these algorithms
+to become even faster.
+
+142
+00:06:48,970 --> 00:06:52,760
+People have added shortcuts and they
+have looked at hierarchical algorithms.
+
+143
+00:06:52,760 --> 00:06:54,280
+And perhaps, through reading list or
+
+144
+00:06:54,280 --> 00:06:56,960
+another video,
+we will give you a sense of some of those.
+
+145
+00:06:56,960 --> 00:06:57,590
+Okay.
+
+146
+00:06:57,590 --> 00:06:58,510
+Just to wrap up.
+
+147
+00:06:58,510 --> 00:07:02,140
+Again, this module we looked at shortest
+part algorithm, and together with
+
+148
+00:07:02,140 --> 00:07:06,270
+the previous two modules, we gave you a
+sense of physical data model which covers
+
+149
+00:07:06,270 --> 00:07:10,970
+data structures and algorithms underlying
+the shortest path in connectivity theory.
+
+150
+00:07:10,970 --> 00:07:14,121
+Thank you and you know, hopefully
+we'll see you in the next module.
+

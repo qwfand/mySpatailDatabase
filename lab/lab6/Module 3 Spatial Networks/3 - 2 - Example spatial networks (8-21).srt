@@ -1,0 +1,689 @@
+1
+00:00:00,130 --> 00:00:03,060
+Welcome back to the discussion
+of spacial networks.
+
+2
+00:00:03,060 --> 00:00:06,850
+In previous video,
+we looked at the societal motivation for
+
+3
+00:00:06,850 --> 00:00:09,370
+studying spacial network and
+we saw that there are many,
+
+4
+00:00:09,370 --> 00:00:12,510
+many use cases,
+particularly in an urban society.
+
+5
+00:00:12,510 --> 00:00:14,120
+All of us use navigation, for
+
+6
+00:00:14,120 --> 00:00:18,600
+example, on either a web-based or
+smart phone based platform, okay?
+
+7
+00:00:19,600 --> 00:00:23,970
+We also saw the limitations, and we argued
+that the spacial equating we learned so
+
+8
+00:00:23,970 --> 00:00:29,050
+far in the previous week is not
+adequate to model these queries on
+
+9
+00:00:29,050 --> 00:00:30,800
+spacial networks, okay?
+
+10
+00:00:30,800 --> 00:00:33,980
+In this video segment,
+we have very modest goal.
+
+11
+00:00:33,980 --> 00:00:39,420
+We are just going to look at three simple
+examples of spatial networks, okay?
+
+12
+00:00:39,420 --> 00:00:43,312
+And these will be used for
+running examples through all this module.
+
+13
+00:00:43,312 --> 00:00:47,190
+So, when we come back in later videos,
+we will often see these networks and
+
+14
+00:00:47,190 --> 00:00:51,310
+associated queries being used to
+illustrate various ideas, okay?
+
+15
+00:00:52,850 --> 00:00:55,990
+For example, when we introduce the graph
+model, we'll show you the graph
+
+16
+00:00:55,990 --> 00:01:00,190
+representation of three example networks
+from this particular module, okay?
+
+17
+00:01:00,190 --> 00:01:04,570
+So at the end of this video, we should
+all be able to describe at least three
+
+18
+00:01:04,570 --> 00:01:09,420
+simple spatial networks and
+a few queries associated with that, okay?
+
+19
+00:01:09,420 --> 00:01:13,170
+So let's look at the first one,
+which is already quite familiar to us, and
+
+20
+00:01:13,170 --> 00:01:14,820
+this is a road network.
+
+21
+00:01:14,820 --> 00:01:19,950
+So on the left we are giving you a very
+simple view of road networks, with major
+
+22
+00:01:19,950 --> 00:01:23,720
+roads in the city of Minneapolis where,
+you know, city of Minnesota is located.
+
+23
+00:01:24,890 --> 00:01:26,770
+It also has, you know, two routes.
+
+24
+00:01:26,770 --> 00:01:30,950
+So you kind of see a blue line and
+a red line, and they are representing two
+
+25
+00:01:30,950 --> 00:01:36,410
+kinds of shortest path between this upper
+left corner and lower right corner.
+
+26
+00:01:36,410 --> 00:01:40,160
+The, as you can guess, the red line
+is probably shortest distance but
+
+27
+00:01:40,160 --> 00:01:43,910
+the blue line is shortest travel time
+as it takes advantage of the freeway.
+
+28
+00:01:43,910 --> 00:01:45,686
+Highway 94 in this case, okay?
+
+29
+00:01:45,686 --> 00:01:49,060
+So types of queries yet, again,
+are probably familiar to you.
+
+30
+00:01:49,060 --> 00:01:51,400
+The very fast one we already talked about.
+
+31
+00:01:51,400 --> 00:01:53,370
+We may ask for a shorted path.
+
+32
+00:01:53,370 --> 00:01:58,230
+So given a starting location, maybe in
+Residio, Minnesota, and a destination,
+
+33
+00:01:58,230 --> 00:02:03,400
+maybe the airport, we may ask, what is the
+shortest path to reach there, either for
+
+34
+00:02:03,400 --> 00:02:06,520
+distance or travel time and so on, okay?
+
+35
+00:02:06,520 --> 00:02:09,060
+But there are other queries of interest.
+
+36
+00:02:09,060 --> 00:02:12,510
+Again, you know, like location-based
+services, if you have access to that.
+
+37
+00:02:12,510 --> 00:02:17,862
+You could also ask for near, nearest
+instance of facilities from our location.
+
+38
+00:02:17,862 --> 00:02:21,930
+Let's imagine you were in computer science
+building at University of Minnesota and
+
+39
+00:02:21,930 --> 00:02:25,960
+it is lunch time, and you are looking for
+any rest, you know, restaurant.
+
+40
+00:02:25,960 --> 00:02:27,480
+You could ask for that query.
+
+41
+00:02:27,480 --> 00:02:31,167
+Or, for some reason, you wanted to
+get a flu shot, you could ask for
+
+42
+00:02:31,167 --> 00:02:32,932
+the nearest hospital and so on.
+
+43
+00:02:32,932 --> 00:02:37,850
+A third query may be including
+a set of destinations.
+
+44
+00:02:37,850 --> 00:02:41,560
+So we saw this from the business
+context in network analysis.
+
+45
+00:02:41,560 --> 00:02:45,900
+Here, you know it's there may be a
+starting point like a store and they have
+
+46
+00:02:45,900 --> 00:02:51,300
+to deliver a set of, you know, furniture
+to many, many houses and they may ask for
+
+47
+00:02:51,300 --> 00:02:55,510
+a route, which covers all theses houses
+and minimizes the total distance, okay?
+
+48
+00:02:56,540 --> 00:03:00,480
+And, finally, you know,
+we also looked at allocate query.
+
+49
+00:03:00,480 --> 00:03:02,880
+So, let's say you have a set
+of service centers maybe many,
+
+50
+00:03:02,880 --> 00:03:05,275
+many retail stores, and you have a set of,
+
+51
+00:03:05,275 --> 00:03:09,310
+of customers, and you are assigning
+customers to the nearest store.
+
+52
+00:03:09,310 --> 00:03:11,380
+So, you could define service areas or
+
+53
+00:03:11,380 --> 00:03:16,420
+number of customers likely to easiest
+reach your store and so on, okay?
+
+54
+00:03:16,420 --> 00:03:19,060
+All right, so let's switch and
+look at a very different network,
+
+55
+00:03:19,060 --> 00:03:22,220
+which may be less familiar to
+some of us if, unless you live in
+
+56
+00:03:22,220 --> 00:03:26,950
+urban area which has public transportation
+such as train networks, okay?
+
+57
+00:03:26,950 --> 00:03:30,470
+So here,
+we are showing you a subway network.
+
+58
+00:03:30,470 --> 00:03:32,000
+In Minneapolis areas right now,
+
+59
+00:03:32,000 --> 00:03:35,690
+we have a very simple network,
+just one line, so it's not as interesting.
+
+60
+00:03:35,690 --> 00:03:38,770
+In next few years,
+we may have more lines and use that.
+
+61
+00:03:38,770 --> 00:03:41,360
+So we are showing you a network
+from San Francisco area.
+
+62
+00:03:41,360 --> 00:03:47,340
+It's called BART, and it has, you know, in
+this map, it's showing four lines, okay?
+
+63
+00:03:47,340 --> 00:03:52,900
+So you can kind of see one line going from
+top right to bottom left, and so on, okay?
+
+64
+00:03:52,900 --> 00:03:54,250
+The colors are not shown, but
+
+65
+00:03:54,250 --> 00:03:57,310
+they are listed in the text,
+if you could zoom in you will see.
+
+66
+00:03:57,310 --> 00:04:00,360
+So, you know, this particular
+route is Yellow West, you know,
+
+67
+00:04:00,360 --> 00:04:02,690
+it's shown in yellow arrow here.
+
+68
+00:04:02,690 --> 00:04:05,480
+And then one could do a very
+simple aggregate query here.
+
+69
+00:04:05,480 --> 00:04:09,730
+You could say on Yellow West route, tell
+me how many stations are located, okay?
+
+70
+00:04:09,730 --> 00:04:12,999
+So one could count and
+see how many route, you know,
+
+71
+00:04:12,999 --> 00:04:17,105
+stations these, shown as black
+dots are covered by this, okay?
+
+72
+00:04:17,105 --> 00:04:23,386
+Another query, you know, may have
+to do with a particular stop, okay?
+
+73
+00:04:23,386 --> 00:04:26,750
+So in subway network usually you
+have routes and you have stop.
+
+74
+00:04:26,750 --> 00:04:30,473
+And one interesting stop here is Berkeley,
+downtown, which is number two.
+
+75
+00:04:30,473 --> 00:04:33,070
+It's shown as that red square here.
+
+76
+00:04:33,070 --> 00:04:35,140
+And we may ask questions like, you know,
+
+77
+00:04:35,140 --> 00:04:38,940
+which other stops are reachable
+from Berkley, okay?
+
+78
+00:04:38,940 --> 00:04:40,370
+Hopefully, if it is a rich network it
+
+79
+00:04:40,370 --> 00:04:42,910
+would reach all of them
+by switching trains.
+
+80
+00:04:42,910 --> 00:04:45,160
+So, you could ask whether
+you can reach it directly or
+
+81
+00:04:45,160 --> 00:04:46,750
+do you have to change trains, okay?
+
+82
+00:04:48,300 --> 00:04:51,550
+Now, in addition to that, you could
+still do the shortest path queries.
+
+83
+00:04:51,550 --> 00:04:54,514
+So, here we are showing you another
+destination called Daley city, and
+
+84
+00:04:54,514 --> 00:04:55,510
+here is Berkeley.
+
+85
+00:04:55,510 --> 00:04:59,500
+And you could ask, give me the routes
+which connect a particular start point
+
+86
+00:04:59,500 --> 00:05:02,830
+such as Downtown Berkeley and
+a destination such as Daley city.
+
+87
+00:05:04,190 --> 00:05:07,790
+Okay and then finally,
+we could ask for, you know,
+
+88
+00:05:07,790 --> 00:05:10,120
+some other aggregate
+queries on certain routes.
+
+89
+00:05:10,120 --> 00:05:14,240
+So here is a blue route, Blue West,
+and we can ask for the first stop or
+
+90
+00:05:14,240 --> 00:05:15,050
+last stop, okay?
+
+91
+00:05:15,050 --> 00:05:17,450
+So these are subway
+network kind of queries.
+
+92
+00:05:18,640 --> 00:05:19,956
+Let's look at a third network.
+
+93
+00:05:19,956 --> 00:05:23,910
+And again, you know, if you, unless you
+have worked with natural resources or
+
+94
+00:05:23,910 --> 00:05:27,840
+you're a geography enthusiast
+it maybe a little bit new, okay?
+
+95
+00:05:27,840 --> 00:05:31,118
+So here we are showing you
+a natural network of rivers.
+
+96
+00:05:31,118 --> 00:05:35,150
+You know this map is showing you some of
+the major rivers in the United States.
+
+97
+00:05:35,150 --> 00:05:38,090
+For example, Mississippi River
+starts in the state of Minnesota,
+
+98
+00:05:38,090 --> 00:05:43,090
+and then kind of flows south to
+New Orleans and then Gulf of Mexico, okay?
+
+99
+00:05:43,090 --> 00:05:46,220
+But on the way it pick up
+water from many tributaries.
+
+100
+00:05:46,220 --> 00:05:51,370
+So on the way it pick up from Missouri,
+Colorado, Platte and so on, okay?
+
+101
+00:05:51,370 --> 00:05:53,178
+Oh, not Colorado,
+Colorado was the other way.
+
+102
+00:05:53,178 --> 00:05:56,310
+But, you know,
+you have a set of river networks and
+
+103
+00:05:56,310 --> 00:06:00,070
+it's interesting to know which river
+falls into which other river and
+
+104
+00:06:00,070 --> 00:06:01,965
+that could be modeled as
+a spatial network, okay?
+
+105
+00:06:01,965 --> 00:06:06,840
+So, types of queries here may
+be of the following kind.
+
+106
+00:06:06,840 --> 00:06:09,810
+So you could ask, you know,
+for a river Mississippi.
+
+107
+00:06:09,810 --> 00:06:14,200
+You know, list all the other rivers
+which contribute water to Mississippi,
+
+108
+00:06:14,200 --> 00:06:16,360
+which are tributaries to Mississippi.
+
+109
+00:06:16,360 --> 00:06:19,880
+And in this answer, Colorado will not be
+included, because it goes the other way.
+
+110
+00:06:19,880 --> 00:06:23,080
+But you will have Missouri and
+other rivers, okay?
+
+111
+00:06:23,080 --> 00:06:26,450
+We may ask other questions,
+because sometimes, you know,
+
+112
+00:06:26,450 --> 00:06:29,450
+these rivers may contribute
+water directly by falling or
+
+113
+00:06:29,450 --> 00:06:32,740
+merging with a river or
+sometimes they may be indirect.
+
+114
+00:06:32,740 --> 00:06:38,280
+So, you could separate them out and
+just ask for direct tributaries, okay?
+
+115
+00:06:38,280 --> 00:06:40,730
+Now if you're interested in,
+in emergency management and
+
+116
+00:06:40,730 --> 00:06:46,130
+so on, then a common query is to,
+you know, take care of pollutions.
+
+117
+00:06:46,130 --> 00:06:48,850
+So sometimes you have train lines or
+there are other incidents,
+
+118
+00:06:48,850 --> 00:06:53,310
+there are farms next to rivers, and
+occasionally, accidents happen, all right?
+
+119
+00:06:53,310 --> 00:06:57,820
+So you may have a oil spill, or a
+fertilizer spill and then people want to,
+
+120
+00:06:57,820 --> 00:07:02,250
+essentially, inform everyone
+downstream about water quality.
+
+121
+00:07:02,250 --> 00:07:04,230
+In case they were using it for
+drinking water or
+
+122
+00:07:04,230 --> 00:07:07,815
+other uses, they may have to take
+precaution and stop that, right?
+
+123
+00:07:07,815 --> 00:07:11,980
+That there has been similar incident
+in east coast North Carolina recently.
+
+124
+00:07:12,990 --> 00:07:15,580
+so, so given a particular spill,
+
+125
+00:07:15,580 --> 00:07:20,430
+we may want to ask a question about
+all the rivers that may get affected.
+
+126
+00:07:20,430 --> 00:07:23,150
+And then from there,
+you can inform the communities, okay?
+
+127
+00:07:23,150 --> 00:07:26,210
+So this is a third kind of network and
+slightly different questions.
+
+128
+00:07:27,570 --> 00:07:32,620
+So just to sum up, you know,
+we saw three different spatial networks.
+
+129
+00:07:32,620 --> 00:07:36,750
+A road network, a train network,
+and a river network.
+
+130
+00:07:36,750 --> 00:07:39,930
+And on each we saw some questions, okay?
+
+131
+00:07:39,930 --> 00:07:41,220
+And these were mixed questions.
+
+132
+00:07:41,220 --> 00:07:43,270
+Some of them required
+transitive closure and
+
+133
+00:07:43,270 --> 00:07:48,272
+recursion and will need new knowledge
+that we will learn in this chapter.
+
+134
+00:07:48,272 --> 00:07:51,520
+And somewere very simple like aggregate
+queries that you could have answered using
+
+135
+00:07:51,520 --> 00:07:52,830
+spatial query.
+
+136
+00:07:52,830 --> 00:07:56,830
+And it may be a good exercise for
+you to go back to those questions and
+
+137
+00:07:56,830 --> 00:08:00,930
+ask yourself which of these you can
+answer easily using spatial query, and
+
+138
+00:08:00,930 --> 00:08:02,850
+where do we need new knowledge.
+
+139
+00:08:02,850 --> 00:08:05,790
+So well, this we'll wrap up
+this particular video segment.
+
+140
+00:08:05,790 --> 00:08:08,420
+When we come back,
+we'll introduce mathematical model and
+
+141
+00:08:08,420 --> 00:08:10,930
+information model for spatial networks.
+
+142
+00:08:10,930 --> 00:08:14,620
+So that you can answer all
+of these queries, okay?
+
+143
+00:08:14,620 --> 00:08:18,300
+So looking forward to seeing you in the,
+the next set of video segments.
+
+144
+00:08:18,300 --> 00:08:18,999
+Thank you.
+

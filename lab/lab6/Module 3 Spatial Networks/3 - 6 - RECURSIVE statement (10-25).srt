@@ -1,0 +1,838 @@
+1
+00:00:00,190 --> 00:00:03,750
+Welcome back to the discussion
+of spatial networks.
+
+2
+00:00:03,750 --> 00:00:07,890
+In particular the query languages for
+spacial networks.
+
+3
+00:00:07,890 --> 00:00:10,570
+In past few videos,
+we have looked at the motivation for
+
+4
+00:00:10,570 --> 00:00:15,750
+spatial networks, such as the navigation
+apps that all, we all use on smartphone.
+
+5
+00:00:15,750 --> 00:00:20,110
+We also looked at conceptual models such
+as entity/relationship diagram, as well
+
+6
+00:00:20,110 --> 00:00:24,860
+a graphs, you know, graphs have nice
+mathematical and computational properties.
+
+7
+00:00:24,860 --> 00:00:28,950
+And we also discussed why,
+the query languages that we've learned so
+
+8
+00:00:28,950 --> 00:00:32,800
+far, particularly from the previous
+chapter, are not adequate, so
+
+9
+00:00:32,800 --> 00:00:34,870
+we need to learn new statements.
+
+10
+00:00:34,870 --> 00:00:39,900
+We did learn one new statement CONNECT By,
+which is, which was in last video.
+
+11
+00:00:39,900 --> 00:00:43,580
+In this video, we're going to learn
+another one called, WITH RECURSIVE,
+
+12
+00:00:43,580 --> 00:00:48,375
+which is part of SQL3 standard, and,
+widely available through products.
+
+13
+00:00:48,375 --> 00:00:49,070
+Okay.
+
+14
+00:00:49,070 --> 00:00:53,570
+So, at the end of this video, we should
+all be able to describe this RECURSIVE or
+
+15
+00:00:53,570 --> 00:00:59,860
+WITH RECURSIVE statement in SQL3, and
+also use it to query graphs, Okay.
+
+16
+00:00:59,860 --> 00:01:02,010
+So, here is a quick background.
+
+17
+00:01:02,010 --> 00:01:05,960
+Again, formerly, you remember that
+the special query languages that we
+
+18
+00:01:05,960 --> 00:01:08,490
+studied earlier were simple.
+
+19
+00:01:08,490 --> 00:01:12,580
+They were based on relational algebra and
+some user defined data types.
+
+20
+00:01:12,580 --> 00:01:15,380
+And they at least
+the relational algebra based on
+
+21
+00:01:15,380 --> 00:01:18,742
+SQL could not compute transitive
+closure in the shortest path.
+
+22
+00:01:18,742 --> 00:01:23,590
+. Okay? So, we need it to extend this SQL
+and people could do in different ways.
+
+23
+00:01:23,590 --> 00:01:25,750
+One could add new abstract data types.
+
+24
+00:01:25,750 --> 00:01:30,314
+Now, all these data types such as points,
+polygons do not include graphs and parts.
+
+25
+00:01:30,314 --> 00:01:31,030
+Okay?
+
+26
+00:01:31,030 --> 00:01:33,460
+They do not include operators
+like shortest path.
+
+27
+00:01:33,460 --> 00:01:35,950
+But if we were to design
+new abstract data type and
+
+28
+00:01:35,950 --> 00:01:40,870
+add it to SQL3,
+that could support graph kind of queries.
+
+29
+00:01:40,870 --> 00:01:43,700
+The other option is to
+use custom statements.
+
+30
+00:01:43,700 --> 00:01:46,850
+We learned one of those in the last video,
+in the CONNECT, and
+
+31
+00:01:46,850 --> 00:01:49,770
+we are going to learn the,
+WITH RECURSIVE in this video.
+
+32
+00:01:49,770 --> 00:01:51,010
+Okay?
+
+33
+00:01:51,010 --> 00:01:53,850
+So, without further edu,
+let's look at the inputs and
+
+34
+00:01:53,850 --> 00:01:56,580
+outputs of WITH RECURSIVE statements.
+
+35
+00:01:56,580 --> 00:02:00,690
+In times of inputs,
+the first input is similar to the one for
+
+36
+00:02:00,690 --> 00:02:02,510
+CONNECT, which is the graph.
+
+37
+00:02:02,510 --> 00:02:03,080
+Okay?
+
+38
+00:02:03,080 --> 00:02:08,510
+So, we need to have a table,
+which represents the edges of the graph.
+
+39
+00:02:08,510 --> 00:02:09,320
+Okay?
+So, for example,
+
+40
+00:02:09,320 --> 00:02:14,190
+this set of edges may represent a graph of
+this kind, where it lets node one to two,
+
+41
+00:02:14,190 --> 00:02:16,255
+there is an edge,
+which is the first row, and so on.
+
+42
+00:02:16,255 --> 00:02:16,755
+Okay.
+
+43
+00:02:18,180 --> 00:02:21,090
+Now, given that the output
+is a transitive closure, so
+
+44
+00:02:21,090 --> 00:02:24,810
+we can compute predecessor,
+successors and so on okay?
+
+45
+00:02:24,810 --> 00:02:30,580
+But in terms of input WITH RECURSIVE
+actually takes two additional sub queries,
+
+46
+00:02:30,580 --> 00:02:33,520
+so in other words it's a nested query.
+
+47
+00:02:33,520 --> 00:02:39,320
+The first sub query des,
+describes ways to initialize the result.
+
+48
+00:02:39,320 --> 00:02:44,680
+So, we can take this table odd
+as input and say that the result
+
+49
+00:02:44,680 --> 00:02:48,340
+may be initialized was this table itself
+or a subset arose from the table.
+
+50
+00:02:49,460 --> 00:02:53,450
+The second query explains
+how to grow the result.
+
+51
+00:02:53,450 --> 00:02:59,330
+So, starting from some basic values, which
+is specified by the initialization query,
+
+52
+00:02:59,330 --> 00:03:01,520
+how do we add more rows to the result,
+okay?
+
+53
+00:03:03,080 --> 00:03:05,340
+So, using these facilities you know,
+
+54
+00:03:05,340 --> 00:03:10,788
+can ex-compute predecessors, successors,
+and you can actually do little bit more.
+
+55
+00:03:10,788 --> 00:03:14,260
+You can also go ahead and compute shortest
+path and things of that kind, okay?
+
+56
+00:03:15,890 --> 00:03:19,270
+So, to give you a quick example, you know,
+
+57
+00:03:19,270 --> 00:03:23,290
+here are the three parts of WITH RECURSIVE
+statement and we will illustrate each.
+
+58
+00:03:23,290 --> 00:03:28,190
+So, the first part, usually,
+is the name of the result table and
+
+59
+00:03:28,190 --> 00:03:32,770
+the columns in the result table, and
+that follows the key word WITH RECURSIVE.
+
+60
+00:03:32,770 --> 00:03:36,940
+So, in this case,
+the result will be a table named X, and
+
+61
+00:03:36,940 --> 00:03:41,090
+this table has two columns, source and
+the other column is destination.
+
+62
+00:03:41,090 --> 00:03:44,120
+So, the table structure is pretty
+much similar to the input that we
+
+63
+00:03:44,120 --> 00:03:46,070
+saw before in this case.
+
+64
+00:03:46,070 --> 00:03:48,640
+But if you wanted we could have
+other structure, for example,
+
+65
+00:03:48,640 --> 00:03:53,270
+you could choose only one of these columns
+as we saw with the CONNECT statement.
+
+66
+00:03:53,270 --> 00:03:56,250
+The second part is a sub query,
+
+67
+00:03:56,250 --> 00:04:00,980
+which tells us how to initialize
+the result, you know, named X.
+
+68
+00:04:00,980 --> 00:04:04,300
+So, in this case, this query is
+something you have seen before.
+
+69
+00:04:04,300 --> 00:04:09,200
+So, if you only concentrate on
+the SQL query inside the blue box,
+
+70
+00:04:09,200 --> 00:04:12,800
+then you can probably tell that
+the result is initialized by
+
+71
+00:04:12,800 --> 00:04:16,230
+simply copying this input to edge table R,
+okay?
+
+72
+00:04:17,430 --> 00:04:20,360
+The third part is the recursive query.
+
+73
+00:04:20,360 --> 00:04:23,720
+So, given some initial result,
+how do we grow it?
+
+74
+00:04:23,720 --> 00:04:29,240
+And it is shown here, and notice that
+this is a recursive query, okay?
+
+75
+00:04:29,240 --> 00:04:32,760
+So, some of you have done recursive
+programming in computer science before or
+
+76
+00:04:32,760 --> 00:04:34,400
+in mathematics.
+
+77
+00:04:34,400 --> 00:04:39,190
+And, essentially recursion means
+that you are defining something
+
+78
+00:04:39,190 --> 00:04:40,910
+using the same thing.
+
+79
+00:04:40,910 --> 00:04:44,940
+So, for example here,
+result X is being defined.
+
+80
+00:04:44,940 --> 00:04:49,440
+But notice that the part of
+the definition uses X, right?
+
+81
+00:04:49,440 --> 00:04:53,810
+So, this result X is defined in terms
+of itself, and that's called recursion.
+
+82
+00:04:55,720 --> 00:04:59,257
+So let's at least look at this example
+to understand how it works, okay?
+
+83
+00:05:00,310 --> 00:05:02,900
+But you know, in all recursions,
+you have to have a base case and
+
+84
+00:05:02,900 --> 00:05:06,325
+that's this blue part, in order for
+this recursion to end.
+
+85
+00:05:06,325 --> 00:05:07,740
+Okay?
+
+86
+00:05:07,740 --> 00:05:10,680
+All right, so, so
+we at least now saw that syntax.
+
+87
+00:05:10,680 --> 00:05:13,719
+And in this syntax, really if you
+build on your old SQL knowledge,
+
+88
+00:05:13,719 --> 00:05:16,680
+then there is only you know,
+a very little new part.
+
+89
+00:05:16,680 --> 00:05:18,690
+The new keywords are WITH RECURSIVE,
+
+90
+00:05:18,690 --> 00:05:21,720
+you follow the result
+table name in its columns.
+
+91
+00:05:21,720 --> 00:05:23,092
+Then there is another keyword S,
+
+92
+00:05:23,092 --> 00:05:27,250
+then you followed with a SQL
+query to initialize the results.
+
+93
+00:05:27,250 --> 00:05:30,200
+Then, this union operator is also
+something we know from before.
+
+94
+00:05:30,200 --> 00:05:32,630
+It just takes two tables and merges them.
+
+95
+00:05:32,630 --> 00:05:33,750
+And then there is a last part,
+
+96
+00:05:33,750 --> 00:05:36,670
+which is another subquery, which is
+a select statement to grow the result.
+
+97
+00:05:37,750 --> 00:05:38,770
+Okay.
+
+98
+00:05:38,770 --> 00:05:41,668
+So, so, let's look an example input and
+output, and
+
+99
+00:05:41,668 --> 00:05:46,250
+then we can see an execution trace to,
+to to appreciate it even more.
+
+100
+00:05:46,250 --> 00:05:50,750
+So, example input could be a simple graph,
+which is shown here with five notes and
+
+101
+00:05:50,750 --> 00:05:51,940
+five edges.
+
+102
+00:05:51,940 --> 00:05:55,633
+But it's presented in a tabular form
+that's shown on the right as table R.
+
+103
+00:05:55,633 --> 00:05:58,710
+Okay, the output, you know,
+
+104
+00:05:58,710 --> 00:06:03,220
+so this is, this is sort of here in for,
+the output X is another table,
+
+105
+00:06:03,220 --> 00:06:08,280
+which has two columns, so in this case,
+your output table is shown here.
+
+106
+00:06:08,280 --> 00:06:12,362
+It just happens to have source and
+destination columns specified here.
+
+107
+00:06:12,362 --> 00:06:15,350
+So, it's very similar
+to input in this case.
+
+108
+00:06:15,350 --> 00:06:20,130
+And graph theory perspective,
+it is actually a richer sect of ages.
+
+109
+00:06:20,130 --> 00:06:23,180
+So, if I can reach you know,
+node 4 from node 1,
+
+110
+00:06:23,180 --> 00:06:27,902
+via multiple other edges, then there
+is a direct edge from 1 to 4 here okay,
+
+111
+00:06:27,902 --> 00:06:30,390
+as we discussed in transitive closure.
+
+112
+00:06:31,562 --> 00:06:34,750
+All right, so let's take a look at
+the meaning of this statement, and
+
+113
+00:06:34,750 --> 00:06:39,130
+one way to specify meaning is via
+providing a hand executing procedure.
+
+114
+00:06:39,130 --> 00:06:39,970
+Okay?
+
+115
+00:06:39,970 --> 00:06:44,550
+So, in order to computer result X,
+we start with the initialization query.
+
+116
+00:06:44,550 --> 00:06:48,000
+And if you remember the que,
+the initialization query, it
+
+117
+00:06:48,000 --> 00:06:53,460
+was simply copying source and data columns
+from import table R to the result table X.
+
+118
+00:06:53,460 --> 00:06:54,400
+So, if we did that,
+
+119
+00:06:54,400 --> 00:07:00,240
+then these five rows from the input table
+will get copied to the output table X.
+
+120
+00:07:00,240 --> 00:07:01,000
+Okay.
+
+121
+00:07:01,000 --> 00:07:05,610
+Once we have done that, we are going to
+grow the result using the recursive step.
+
+122
+00:07:05,610 --> 00:07:08,330
+So, again recall what
+the recursive step was.
+
+123
+00:07:08,330 --> 00:07:13,060
+And in recursive step, we try to match
+the destination column of input table,
+
+124
+00:07:13,060 --> 00:07:16,980
+that's this column,
+to the source column of result table.
+
+125
+00:07:16,980 --> 00:07:21,650
+So, if as long as there is a match between
+destination here and source in the result,
+
+126
+00:07:21,650 --> 00:07:23,510
+we can add new rows okay.
+
+127
+00:07:23,510 --> 00:07:26,410
+To rephrase it, we can say it as follows.
+
+128
+00:07:26,410 --> 00:07:31,934
+We can say that in case you had a row
+a,b in R, okay, such as let's say 1,2.
+
+129
+00:07:33,080 --> 00:07:38,670
+And you had another row b, c in X,
+such as this, let's say, two, three.
+
+130
+00:07:38,670 --> 00:07:43,280
+If that happens, then you can essentially
+say, look, you know, in the original
+
+131
+00:07:43,280 --> 00:07:48,110
+result, we can go from one to two, and in
+result table, we can go from two to three.
+
+132
+00:07:48,110 --> 00:07:52,000
+So, we can add a row from one
+to three in the result table.
+
+133
+00:07:52,000 --> 00:07:52,700
+Okay?
+
+134
+00:07:52,700 --> 00:07:57,460
+To give you more specific example,
+here it is okay?
+
+135
+00:07:57,460 --> 00:08:02,630
+So R has 1 2 X has 2 3, right,
+R has 1 2 and X has 2 3.
+
+136
+00:08:02,630 --> 00:08:07,630
+And in this case,
+R's destination matches X's source, so
+
+137
+00:08:07,630 --> 00:08:11,950
+we could add a new edge,
+1 3 to result, okay?
+
+138
+00:08:11,950 --> 00:08:15,400
+And that's shown as here,
+so we added 1 more, okay.
+
+139
+00:08:15,400 --> 00:08:20,790
+We can find similar, you know, other pairs
+from R and X, to add more information.
+
+140
+00:08:20,790 --> 00:08:25,550
+So, for example, you notice that
+in import table you had 2 3.
+
+141
+00:08:25,550 --> 00:08:31,180
+And its destination matched
+the source of 3 to 4.
+
+142
+00:08:31,180 --> 00:08:34,780
+And when that happens,
+now we can add 2 to 4 in the result.
+
+143
+00:08:34,780 --> 00:08:36,100
+Okay?
+
+144
+00:08:36,100 --> 00:08:39,313
+So, continuing on,
+you can find other such pairs.
+
+145
+00:08:39,313 --> 00:08:42,610
+R has (5, 3), X has (3, 4).
+
+146
+00:08:42,610 --> 00:08:45,062
+So you can add (5, 4).
+
+147
+00:08:45,062 --> 00:08:48,175
+And then finally, R has (1, 5),
+X has (5, 4), so you can add (1,
+
+148
+00:08:48,175 --> 00:08:49,540
+4) in that result table.
+
+149
+00:08:49,540 --> 00:08:50,040
+Okay?
+
+150
+00:08:51,910 --> 00:08:53,740
+And if after this,
+
+151
+00:08:53,740 --> 00:08:57,940
+if you try this procedure further, in
+this example we are not going to get any.
+
+152
+00:08:57,940 --> 00:09:01,670
+So, this recursion continues
+till the result stabilizes.
+
+153
+00:09:01,670 --> 00:09:03,250
+If we cannot add any more,
+
+154
+00:09:03,250 --> 00:09:06,650
+then the recursion ends and
+at that time you have the full result.
+
+155
+00:09:06,650 --> 00:09:08,910
+So, this is your result table in SQL.
+
+156
+00:09:08,910 --> 00:09:10,930
+If you want to visualize it as a graph,
+
+157
+00:09:10,930 --> 00:09:14,980
+then it will look like this transitive
+closure graph that we saw before.
+
+158
+00:09:14,980 --> 00:09:18,840
+And all the new rows we added
+are these new edges that show up in
+
+159
+00:09:18,840 --> 00:09:19,820
+the transitive closure, okay?
+
+160
+00:09:20,970 --> 00:09:26,850
+So, to summarize, in SQL3,
+a new statement with recursive
+
+161
+00:09:26,850 --> 00:09:31,520
+was added to support graph queries,
+such as predecessor successors that we
+
+162
+00:09:31,520 --> 00:09:36,960
+saw before with connect by, but
+also newer queries like shortest path.
+
+163
+00:09:36,960 --> 00:09:41,210
+And in this particular video we
+saw the syntax of WITH RECURSIVE.
+
+164
+00:09:41,210 --> 00:09:44,230
+It essentially names the result
+table in its columns.
+
+165
+00:09:44,230 --> 00:09:47,010
+It gives you a initialization sub query,
+and
+
+166
+00:09:47,010 --> 00:09:49,540
+finally a recursive sub
+query to grow the result.
+
+167
+00:09:49,540 --> 00:09:50,420
+Okay?
+
+168
+00:09:50,420 --> 00:09:54,470
+And this gives you a basic means to
+write queries on the graph in SQL3.
+
+169
+00:09:54,470 --> 00:09:55,540
+Okay?
+
+170
+00:09:55,540 --> 00:10:00,410
+With this, we'll more or less wrap up the
+discussion of query languages on graphs,
+
+171
+00:10:00,410 --> 00:10:04,290
+and in subsequent video we'll come back
+and go to the physical data model.
+
+172
+00:10:04,290 --> 00:10:08,450
+Try to see the data structures which
+are used to represent these graphs, and
+
+173
+00:10:08,450 --> 00:10:11,550
+also the actual algorithms
+that a database may
+
+174
+00:10:11,550 --> 00:10:15,220
+keep to quickly execute graph
+queries on large graphs.
+
+175
+00:10:15,220 --> 00:10:15,810
+Okay?
+
+176
+00:10:15,810 --> 00:10:19,070
+So, I look forward to seeing you in
+the next videos on physical data model.
+
+177
+00:10:19,070 --> 00:10:20,201
+Thank you.
+[SOUND]
+

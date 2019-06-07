@@ -1,0 +1,965 @@
+1
+00:00:00,310 --> 00:00:04,040
+Welcome back to the discussion
+of spatial networks.
+
+2
+00:00:04,040 --> 00:00:08,760
+In previous few videos, we looked at the
+motivation for spatial network in terms of
+
+3
+00:00:08,760 --> 00:00:13,200
+location based queries in urban areas
+where transportation networks and
+
+4
+00:00:13,200 --> 00:00:18,460
+roadmap constraint our day to day movement
+then we went you know, under the hood.
+
+5
+00:00:18,460 --> 00:00:23,050
+We looked at conceptual data models
+including intraday relationship diagrams.
+
+6
+00:00:23,050 --> 00:00:24,810
+As well as graphs.
+
+7
+00:00:24,810 --> 00:00:29,030
+We also looked at logical data models,
+particularly query languages.
+
+8
+00:00:29,030 --> 00:00:33,580
+How we added new statements,
+like connect with and
+
+9
+00:00:33,580 --> 00:00:38,320
+with recursive to query graphs for
+connectivity of shortest path.
+
+10
+00:00:38,320 --> 00:00:43,090
+Now we are going to go even
+closer to the computer platform.
+
+11
+00:00:43,090 --> 00:00:45,710
+In, in the terms of
+physical data model and
+
+12
+00:00:45,710 --> 00:00:47,930
+look at data structures and algorithms.
+
+13
+00:00:48,960 --> 00:00:51,960
+So this particular video will
+focus on data structures, and
+
+14
+00:00:51,960 --> 00:00:56,440
+after this particular video, we should
+be able to list at least a couple of
+
+15
+00:00:56,440 --> 00:00:59,920
+common data structures representing
+graphs in main memory.
+
+16
+00:00:59,920 --> 00:01:04,050
+We should also be familiar with
+a couple of file structures which
+
+17
+00:01:04,050 --> 00:01:05,990
+represent graphs on disks.
+
+18
+00:01:05,990 --> 00:01:07,740
+And possibly compare them, okay?
+
+19
+00:01:09,110 --> 00:01:10,780
+So again, here is the big picture.
+
+20
+00:01:10,780 --> 00:01:13,780
+Remember, we talked about conceptual
+data models such as graphs and
+
+21
+00:01:13,780 --> 00:01:15,630
+entity relationship diagrams.
+
+22
+00:01:15,630 --> 00:01:17,900
+Logical data model, query languages.
+
+23
+00:01:17,900 --> 00:01:20,190
+And now we are really going
+into physical data model,
+
+24
+00:01:20,190 --> 00:01:22,800
+very close to implementation
+in performance.
+
+25
+00:01:22,800 --> 00:01:24,980
+And the goal is to look
+at storage structure.
+
+26
+00:01:24,980 --> 00:01:27,120
+Next video we'll come back and
+look at algorithms, okay?
+
+27
+00:01:28,520 --> 00:01:31,550
+So without further ado,
+let's look at a simple graph which is
+
+28
+00:01:31,550 --> 00:01:34,610
+shown on the bottom left and
+if you remember, there are six nodes.
+
+29
+00:01:34,610 --> 00:01:37,210
+1, 2, I'm sorry, 5 nodes.
+
+30
+00:01:37,210 --> 00:01:39,770
+1, 2, 3, 4, and 5.
+
+31
+00:01:39,770 --> 00:01:40,900
+And there are six edges.
+
+32
+00:01:40,900 --> 00:01:45,870
+So for example, node 1, from there we can
+go to 2, from 2 we can go to 3, and so
+
+33
+00:01:45,870 --> 00:01:47,180
+on, okay?
+
+34
+00:01:47,180 --> 00:01:51,480
+So if we were to represent this in main
+memory using simple data structures,
+
+35
+00:01:51,480 --> 00:01:53,640
+there are two common representations.
+
+36
+00:01:53,640 --> 00:01:56,630
+The first is based on matrices.
+
+37
+00:01:56,630 --> 00:02:00,420
+And you may have come across
+matrices also in mathematics.
+
+38
+00:02:00,420 --> 00:02:03,880
+And in this case we won't need
+to define rows and columns.
+
+39
+00:02:03,880 --> 00:02:08,880
+So for this particular graph a simple
+representation uses nodes for
+
+40
+00:02:08,880 --> 00:02:11,190
+both rows and for columns.
+
+41
+00:02:11,190 --> 00:02:14,190
+So here is a matrix which has five rows,
+
+42
+00:02:14,190 --> 00:02:17,680
+one, sorry five columns one per node and
+five rows.
+
+43
+00:02:17,680 --> 00:02:19,060
+1 per node.
+
+44
+00:02:19,060 --> 00:02:19,630
+Okay?
+
+45
+00:02:19,630 --> 00:02:22,310
+To represent edges,
+we can use matrix entries.
+
+46
+00:02:22,310 --> 00:02:27,800
+So if you think about this entry 1, this
+may represent an edge from node 1 to 2.
+
+47
+00:02:27,800 --> 00:02:30,130
+So this edge 1 to 2 is repre,
+
+48
+00:02:30,130 --> 00:02:34,520
+represented as matrix entry in first row,
+second column.
+
+49
+00:02:34,520 --> 00:02:35,160
+Okay?
+
+50
+00:02:35,160 --> 00:02:37,200
+More abstractly.
+
+51
+00:02:37,200 --> 00:02:41,080
+If we look at an entry in row A and
+column B,
+
+52
+00:02:41,080 --> 00:02:45,920
+this will be one only if we have
+an edge from node A to node B.
+
+53
+00:02:45,920 --> 00:02:48,900
+Okay.
+If it is 0 means there is no edge, okay?
+
+54
+00:02:48,900 --> 00:02:53,180
+So using this we can represent
+the information and you can yet you know,
+
+55
+00:02:53,180 --> 00:02:54,050
+also query.
+
+56
+00:02:54,050 --> 00:02:58,200
+If I want to know all the edges
+that are going out of a node.
+
+57
+00:02:58,200 --> 00:03:00,440
+Then we could look for a particular row.
+
+58
+00:03:00,440 --> 00:03:04,070
+So for example first row shows me all
+the edges going out of node 1, okay?
+
+59
+00:03:05,170 --> 00:03:08,200
+If I want to know about all
+the edges which are incident,
+
+60
+00:03:08,200 --> 00:03:11,350
+which are incoming to a particular node,
+we'll look at columns.
+
+61
+00:03:11,350 --> 00:03:16,800
+So for example first column, shows you all
+the edges which are coming into node 1.
+
+62
+00:03:16,800 --> 00:03:18,930
+So in other words there is only one edge.
+
+63
+00:03:18,930 --> 00:03:20,160
+From 5 to 1.
+
+64
+00:03:20,160 --> 00:03:21,420
+That is incident on one, okay?
+
+65
+00:03:22,700 --> 00:03:25,770
+And once you have this representation
+you can use matrix algorithms.
+
+66
+00:03:25,770 --> 00:03:28,720
+So if you remember some of
+your matrix operations,
+
+67
+00:03:29,760 --> 00:03:34,400
+such as matrix multiplication we
+can form that repeatedly again and
+
+68
+00:03:34,400 --> 00:03:37,570
+again and again to get
+connectivity kind of information.
+
+69
+00:03:38,960 --> 00:03:43,520
+Now in, computer science, there is another
+very common representation which is
+
+70
+00:03:43,520 --> 00:03:45,290
+based on our adjacency list.
+
+71
+00:03:45,290 --> 00:03:47,530
+So if you have programmed references or
+
+72
+00:03:47,530 --> 00:03:52,650
+pointers in languages like JAVA,
+C++ or C, people often
+
+73
+00:03:52,650 --> 00:03:57,320
+use that kind of representation to
+make an adjacency list data structure.
+
+74
+00:03:57,320 --> 00:04:02,710
+And which may look like this, so here you
+notice the list is a list of nodes, so
+
+75
+00:04:02,710 --> 00:04:08,240
+all five nodes are in a list, maybe node 1
+is first, node 2 is second and so on, and
+
+76
+00:04:08,240 --> 00:04:13,770
+then with each of this nodes we attached,
+ere, a list of.
+
+77
+00:04:13,770 --> 00:04:15,920
+Successive nodes, okay?
+
+78
+00:04:15,920 --> 00:04:16,910
+In other words if you,
+
+79
+00:04:16,910 --> 00:04:22,500
+let's say you are standing at node 1 there
+are two outgoing edges to node 4 and 2.
+
+80
+00:04:22,500 --> 00:04:24,140
+So four and two are successors and
+
+81
+00:04:24,140 --> 00:04:29,200
+they are listed, you know,
+just after one to represent the two edges.
+
+82
+00:04:29,200 --> 00:04:35,790
+The edge from node 1 to 2 and
+the edge from 1 to 4 okay?
+
+83
+00:04:35,790 --> 00:04:39,560
+This kind of data structure is often,
+agin useful to,
+
+84
+00:04:39,560 --> 00:04:43,980
+to find out all the successors or
+predecessors of a particular node okay.
+
+85
+00:04:43,980 --> 00:04:45,550
+In this case successors are easier.
+
+86
+00:04:45,550 --> 00:04:48,530
+Predecessor is a little bit harder but
+you can do that okay good.
+
+87
+00:04:49,920 --> 00:04:53,060
+So this is the life in main memory and
+many of you may have take other
+
+88
+00:04:53,060 --> 00:04:56,730
+computer science courses or
+done programming er, you know.
+
+89
+00:04:56,730 --> 00:04:59,630
+Code in Java and so
+on where you use this data structure.
+
+90
+00:05:00,640 --> 00:05:03,740
+When you go to disk,
+the story changes a little bit.
+
+91
+00:05:03,740 --> 00:05:06,720
+On disk we often think in terms of tables.
+
+92
+00:05:06,720 --> 00:05:08,950
+And in terms of disk blocks.
+
+93
+00:05:08,950 --> 00:05:13,260
+So let's first look at a table
+representation of this graph.
+
+94
+00:05:13,260 --> 00:05:17,650
+In the traditional relational databases,
+people often use normalized tables.
+
+95
+00:05:17,650 --> 00:05:20,950
+Where each sell is an atomic value.
+
+96
+00:05:20,950 --> 00:05:25,410
+And if we were to adhere to that kind of
+a representation, we will need two tables.
+
+97
+00:05:25,410 --> 00:05:29,060
+We may have a table for nodes,
+and another table for edges.
+
+98
+00:05:29,060 --> 00:05:33,870
+The node table may have node ID as well
+as more node properties at this location.
+
+99
+00:05:33,870 --> 00:05:37,370
+The edge table, again,
+may have the start node end node for
+
+100
+00:05:37,370 --> 00:05:40,620
+the edge, and then edge length or
+other properties, okay?
+
+101
+00:05:42,050 --> 00:05:47,660
+Now oftentimes, the shortest fat
+algorithms are run in a specialized
+
+102
+00:05:47,660 --> 00:05:52,870
+environment outside databases, and
+they prefer a denormalized representation.
+
+103
+00:05:52,870 --> 00:05:53,750
+And in this case,
+
+104
+00:05:53,750 --> 00:05:58,320
+we actually merged the two tables into one
+because we know that often times when we
+
+105
+00:05:58,320 --> 00:06:02,940
+are at a node in a graph we often
+want a list of all successive nodes.
+
+106
+00:06:02,940 --> 00:06:03,500
+Okay.
+
+107
+00:06:03,500 --> 00:06:06,180
+So this other representation looks
+very similar to the [INAUDIBLE]
+
+108
+00:06:06,180 --> 00:06:08,690
+list we just saw in main memory.
+
+109
+00:06:08,690 --> 00:06:11,680
+So he had noticed that in this
+particular table there are five rows.
+
+110
+00:06:11,680 --> 00:06:12,890
+One per node.
+
+111
+00:06:12,890 --> 00:06:16,440
+And for each node we have
+listed the successor nodes.
+
+112
+00:06:16,440 --> 00:06:18,040
+As well as predecessors.
+
+113
+00:06:18,040 --> 00:06:21,850
+And this table is often preferred,
+over the normalized version for
+
+114
+00:06:21,850 --> 00:06:24,229
+shortest path [INAUDIBLE].
+
+115
+00:06:24,229 --> 00:06:24,736
+Okay.
+
+116
+00:06:24,736 --> 00:06:28,550
+There is another challenge on the,
+you know, disk environment.
+
+117
+00:06:28,550 --> 00:06:30,940
+And that's why, you know,
+instead of using the word.
+
+118
+00:06:30,940 --> 00:06:31,900
+Data structures.
+
+119
+00:06:31,900 --> 00:06:35,010
+People sometimes use the word
+file structures when we refer to
+
+120
+00:06:35,010 --> 00:06:36,560
+storage on the disk.
+
+121
+00:06:36,560 --> 00:06:41,460
+And this challenge is to essentially
+partition your file across disk blocks.
+
+122
+00:06:41,460 --> 00:06:45,770
+You know if, many of you know that the
+unit of access on disk is not in terms of
+
+123
+00:06:45,770 --> 00:06:49,610
+words, but it is in terms of disk
+blocks which may be kilobytes.
+
+124
+00:06:49,610 --> 00:06:53,110
+So, in other words, even if you
+need the successor of one node,.
+
+125
+00:06:53,110 --> 00:06:54,600
+You know, that may represent only,
+
+126
+00:06:54,600 --> 00:06:58,770
+let's say, 100 bytes, but
+the disk will send you a kilobyte anyway.
+
+127
+00:06:58,770 --> 00:07:00,900
+Okay?
+So you will do lot more work.
+
+128
+00:07:00,900 --> 00:07:03,190
+So you might as well group the records,
+
+129
+00:07:03,190 --> 00:07:07,550
+which are likely to be accessed
+together in the common disk pages.
+
+130
+00:07:07,550 --> 00:07:09,430
+Okay?
+So this is a central problem when you
+
+131
+00:07:09,430 --> 00:07:10,950
+store data on disk.
+
+132
+00:07:10,950 --> 00:07:11,860
+Okay?
+
+133
+00:07:11,860 --> 00:07:13,830
+So in case of graph.
+
+134
+00:07:13,830 --> 00:07:17,500
+We can show you two ways to divide
+up a graph into disk pages.
+
+135
+00:07:17,500 --> 00:07:20,250
+And try to see, you know,
+how we can rank them.
+
+136
+00:07:20,250 --> 00:07:23,460
+So let's suppose we have a different
+graph here with 16 nodes.
+
+137
+00:07:23,460 --> 00:07:25,800
+And then, you know,
+some of these edges, okay.
+
+138
+00:07:25,800 --> 00:07:29,450
+So, and these are, these nodes
+are embedded in a geometric space.
+
+139
+00:07:29,450 --> 00:07:33,090
+So you can think of latitude and
+longitude or x y coordinates, okay.
+
+140
+00:07:33,090 --> 00:07:35,680
+So how should we divide
+it up into disk pages.
+
+141
+00:07:35,680 --> 00:07:40,680
+And let's for simplicity assume that each
+disk page can hold four nodes, okay?
+
+142
+00:07:40,680 --> 00:07:45,010
+You can divide it geometrically you know,
+which is shown in the second figure.
+
+143
+00:07:45,010 --> 00:07:49,890
+So here all the red four nodes go to one
+page, green 4 go to other, blue 4 go to
+
+144
+00:07:49,890 --> 00:07:53,180
+other and so on, and it's called
+geometric partitioning because you have
+
+145
+00:07:53,180 --> 00:07:58,350
+taken a vertical line and a horizontal
+line to cut up the graph into four pages.
+
+146
+00:07:58,350 --> 00:08:02,610
+And incidentally this is the dominant way
+to deal with data and spacial databases.
+
+147
+00:08:02,610 --> 00:08:06,700
+If you think of our tree, quad tree,
+grade file, they all think like that.
+
+148
+00:08:06,700 --> 00:08:07,680
+Okay?
+
+149
+00:08:07,680 --> 00:08:10,720
+Now, one of the insights
+in this space is to
+
+150
+00:08:10,720 --> 00:08:14,140
+say that really another
+partitioning may be multi table.
+
+151
+00:08:14,140 --> 00:08:15,910
+Which doesn't follow geometry.
+
+152
+00:08:15,910 --> 00:08:18,510
+But instead it looks
+at the graph edges and
+
+153
+00:08:18,510 --> 00:08:22,550
+try to cut as few edges as
+possible as shown here.
+
+154
+00:08:22,550 --> 00:08:24,830
+So now this area, notice here that
+the green nodes are together.
+
+155
+00:08:24,830 --> 00:08:26,360
+Red nodes are together.
+
+156
+00:08:26,360 --> 00:08:27,810
+Brown are together.
+
+157
+00:08:27,810 --> 00:08:31,820
+And you don't have a very, you know,
+strict kind of geometric partitioning.
+
+158
+00:08:31,820 --> 00:08:34,560
+But what is being done is you
+notice these yellow edges.
+
+159
+00:08:34,560 --> 00:08:36,870
+And they are the ones which
+go across the disk pages, and
+
+160
+00:08:36,870 --> 00:08:38,400
+we are trying to reduce them.
+
+161
+00:08:38,400 --> 00:08:44,040
+So in this case, you see the,
+the cut edges are 1, 2, 3, 4 and 5.
+
+162
+00:08:44,040 --> 00:08:45,740
+Whereas, the geometric had many more.
+
+163
+00:08:45,740 --> 00:08:46,820
+It had seven, okay?
+
+164
+00:08:48,450 --> 00:08:51,130
+So, one of the insights is
+that graph computations,
+
+165
+00:08:51,130 --> 00:08:55,040
+they often access information
+by connectivity, that is, edges.
+
+166
+00:08:55,040 --> 00:08:57,740
+And if all edges are equally
+likely to accessed,
+
+167
+00:08:57,740 --> 00:09:00,000
+then they would prefer
+geometric partition.
+
+168
+00:09:00,000 --> 00:09:04,230
+If there is a non-uniform distribution,
+then you may prefer partitioning, which
+
+169
+00:09:04,230 --> 00:09:10,360
+minimize the sum of weights on [INAUDIBLE]
+To give you a more bigger picture.
+
+170
+00:09:10,360 --> 00:09:13,760
+You know here is, are, is the road map,
+major roads in Minneapolis, and
+
+171
+00:09:13,760 --> 00:09:17,660
+we are showing you two ways to
+partition it across disk blocks.
+
+172
+00:09:17,660 --> 00:09:21,960
+And in this case, the white edges
+are showing you the cut edges, okay?
+
+173
+00:09:21,960 --> 00:09:25,360
+So you may want to pause the video
+here for a second or two and stare at
+
+174
+00:09:25,360 --> 00:09:29,610
+these pictures and check which picture,
+we don't, between the left and right.
+
+175
+00:09:29,610 --> 00:09:31,960
+Which one has less white, okay?
+
+176
+00:09:31,960 --> 00:09:34,600
+And that's the one which
+has fewer cut edges.
+
+177
+00:09:34,600 --> 00:09:38,150
+And that's the one which will reduce
+disk I/O for graph queries, alright?
+
+178
+00:09:39,530 --> 00:09:42,860
+And in this case, you know,
+hopefully we will agree that on
+
+179
+00:09:42,860 --> 00:09:46,330
+the right side you have fewer white and
+that will be preferable.
+
+180
+00:09:46,330 --> 00:09:46,960
+'Kay.
+
+181
+00:09:46,960 --> 00:09:50,960
+So, The last activity in this
+module is a small exercise.
+
+182
+00:09:50,960 --> 00:09:54,670
+So, let's look at this simple network
+which we have seen before in terms of
+
+183
+00:09:54,670 --> 00:09:56,350
+languages and so on.
+
+184
+00:09:56,350 --> 00:09:59,070
+And this has six nodes and few more edges.
+
+185
+00:09:59,070 --> 00:10:02,230
+And we'd like you to consider different
+ways to partition this network
+
+186
+00:10:02,230 --> 00:10:03,850
+across disk pages.
+
+187
+00:10:03,850 --> 00:10:07,420
+And rank these partitionings
+by the cut-edges.
+
+188
+00:10:07,420 --> 00:10:08,670
+Okay?
+So suppose.
+
+189
+00:10:08,670 --> 00:10:10,990
+You know you could partition it like this.
+
+190
+00:10:10,990 --> 00:10:15,590
+So nodes 1, 2, and 3, these are together,
+and you may cut these edges.
+
+191
+00:10:15,590 --> 00:10:16,590
+Right?
+
+192
+00:10:16,590 --> 00:10:21,210
+Or you might have 2, 3, 4 together,
+so which are these 2, 3,
+
+193
+00:10:21,210 --> 00:10:24,320
+4 and you might cut these edges,
+and so on.
+
+194
+00:10:24,320 --> 00:10:26,490
+So you may consider these partitionings.
+
+195
+00:10:26,490 --> 00:10:28,340
+Count the number of edges cut,
+
+196
+00:10:28,340 --> 00:10:31,500
+and suggest which is most
+preferred to reduce your cost.
+
+197
+00:10:31,500 --> 00:10:32,550
+Okay?
+
+198
+00:10:32,550 --> 00:10:36,290
+To wrap up this video, you know,
+we looked at main memory data structures.
+
+199
+00:10:36,290 --> 00:10:39,780
+And disc based file structures,
+for storing road maps and
+
+200
+00:10:39,780 --> 00:10:41,350
+other spatial networks.
+
+201
+00:10:41,350 --> 00:10:45,780
+And one of the insight was that we
+should minimize the edges cut by
+
+202
+00:10:45,780 --> 00:10:47,130
+disc partitioning.
+
+203
+00:10:47,130 --> 00:10:48,590
+To reduce your cost.
+
+204
+00:10:48,590 --> 00:10:49,858
+Okay?
+
+205
+00:10:49,858 --> 00:10:54,373
+In the next video we'll come back and
+look at graph algorithms and which may use
+
+206
+00:10:54,373 --> 00:10:58,199
+this data structures to answer
+connectivity of shortest path query.
+
+207
+00:10:58,199 --> 00:10:59,245
+So look forward to seeing you then.
+

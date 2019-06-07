@@ -1,0 +1,1583 @@
+1
+00:00:00,120 --> 00:00:03,025
+Welcome back to the discussion
+of spatial networks.
+
+2
+00:00:03,025 --> 00:00:07,860
+In our previous two videos, we primarily
+looked at the multivision, and
+
+3
+00:00:07,860 --> 00:00:11,630
+we saw that spatial networks
+are societally very important.
+
+4
+00:00:11,630 --> 00:00:15,200
+Many of us already have already used
+them in navigation applications on
+
+5
+00:00:15,200 --> 00:00:19,670
+our smartphone as well as on web
+services like Google Maps, okay?
+
+6
+00:00:20,750 --> 00:00:25,230
+What we want to do now is to go under
+the hood and see how these networks
+
+7
+00:00:25,230 --> 00:00:31,790
+are modeled computationally and then
+how do we design scalable algorithms so
+
+8
+00:00:31,790 --> 00:00:37,500
+that we can compute spatial network
+queries like shortest path very quickly,
+
+9
+00:00:37,500 --> 00:00:42,705
+even on roadmaps spanning the entire
+country or the whole world, okay?
+
+10
+00:00:42,705 --> 00:00:46,160
+So at the end of this module,
+
+11
+00:00:46,160 --> 00:00:50,040
+we should be able to talk about
+conceptual models of spatial networks.
+
+12
+00:00:51,050 --> 00:00:54,140
+In a later video module we'll
+come back and look at logical and
+
+13
+00:00:54,140 --> 00:00:56,060
+physical model as well.
+
+14
+00:00:56,060 --> 00:01:00,130
+And in particular we are going
+to look at Graph models, okay?
+
+15
+00:01:00,130 --> 00:01:03,390
+That is something which has nice
+mathematical properties, and
+
+16
+00:01:03,390 --> 00:01:06,695
+has been investigated in computer
+science for a long time, and
+
+17
+00:01:06,695 --> 00:01:12,160
+it's a very popular computational
+model of spatial networks, okay?
+
+18
+00:01:12,160 --> 00:01:15,500
+So the big picture,
+essentially in this video and
+
+19
+00:01:15,500 --> 00:01:20,030
+the next two videos, we are going to look
+at different models of spatial network,
+
+20
+00:01:20,030 --> 00:01:22,700
+in this particular case we
+are looking at conceptual model.
+
+21
+00:01:22,700 --> 00:01:25,950
+So we'll look at conceptual
+model at two level,
+
+22
+00:01:25,950 --> 00:01:28,860
+one is the conceptual model
+from database perspective,
+
+23
+00:01:28,860 --> 00:01:33,460
+It's often called the entity relationship
+diagram and we saw a similar model in
+
+24
+00:01:33,460 --> 00:01:39,600
+spatial query chapter, describing the data
+sets involving country, river, and cities.
+
+25
+00:01:39,600 --> 00:01:42,590
+In this chapter,
+we are going to describe road networks and
+
+26
+00:01:42,590 --> 00:01:44,110
+spatial networks using this too.
+
+27
+00:01:45,180 --> 00:01:49,252
+But the main focus would be to
+understand the mathematical model
+
+28
+00:01:49,252 --> 00:01:53,970
+called graph because that's widely
+used both in mathematics and
+
+29
+00:01:53,970 --> 00:01:56,570
+in software to model spatial networks.
+
+30
+00:01:56,570 --> 00:02:00,720
+After this video when we come back to next
+video, we'll look at logical data model,
+
+31
+00:02:00,720 --> 00:02:05,530
+in some sense the facilities for creating
+it, as well as physical data model.
+
+32
+00:02:05,530 --> 00:02:09,860
+How do we stores networks so that we can
+scale up to very large networks, okay?
+
+33
+00:02:09,860 --> 00:02:13,000
+So without further ado,
+let's take a look at one of
+
+34
+00:02:13,000 --> 00:02:16,210
+the spatial networks many of
+us are familiar with, right?
+
+35
+00:02:16,210 --> 00:02:20,690
+Probably most of us have used road
+maps in navigation application.
+
+36
+00:02:20,690 --> 00:02:24,230
+So here'd we are showing
+a small picture office.
+
+37
+00:02:24,230 --> 00:02:28,146
+A tiny section of a road map near
+the University of Minnesota in
+
+38
+00:02:28,146 --> 00:02:30,550
+an area called Dinky Town.
+
+39
+00:02:30,550 --> 00:02:33,260
+So, you might actually
+recognize this cartography.
+
+40
+00:02:33,260 --> 00:02:35,670
+You know, very typical of Google Maps.
+
+41
+00:02:35,670 --> 00:02:40,830
+And here you see roads like 4th Street
+which is sort of going from the right side
+
+42
+00:02:40,830 --> 00:02:46,440
+to the left side or 5th Street which
+is going from left to the right.
+
+43
+00:02:46,440 --> 00:02:49,750
+University Avenue which again,
+going from East to West.
+
+44
+00:02:49,750 --> 00:02:53,750
+But you also see these avenues,
+5th Avenue and 6th Avenue.
+
+45
+00:02:53,750 --> 00:02:57,417
+This is 5th and 6th which are going
+sort of North-South direction.
+
+46
+00:02:58,806 --> 00:03:03,350
+Now, if you were to model this is using,
+entity-relationship diagram,
+
+47
+00:03:03,350 --> 00:03:09,340
+then we often ask about the concepts which
+people used to think about roadmaps.
+
+48
+00:03:09,340 --> 00:03:14,020
+So common concepts include the notion
+of roads, streets, and avenues.
+
+49
+00:03:14,020 --> 00:03:18,270
+And we already illustrate, illustrated
+many of those a few seconds ago, okay?
+
+50
+00:03:19,300 --> 00:03:22,370
+But in addition people talk
+about road intersection, so for
+
+51
+00:03:22,370 --> 00:03:25,650
+example you know when you
+look at University Avenue and
+
+52
+00:03:25,650 --> 00:03:30,890
+it intersects with 7th Avenue Southeast,
+this may be an intersection, okay?
+
+53
+00:03:30,890 --> 00:03:33,720
+So here is another intersection, okay?
+
+54
+00:03:33,720 --> 00:03:38,230
+Where 6th Avenue and
+5th Street intersect, okay?
+
+55
+00:03:38,230 --> 00:03:41,020
+Another common concept is segment.
+
+56
+00:03:41,020 --> 00:03:43,860
+Once we have the notion
+of road intersection,
+
+57
+00:03:43,860 --> 00:03:49,580
+then people often decompose a road or
+a street into smaller pieces.
+
+58
+00:03:49,580 --> 00:03:53,380
+So for example, you know if you
+look at this intersection and
+
+59
+00:03:53,380 --> 00:03:58,210
+that intersection then the segment of
+5th Street, just this little piece
+
+60
+00:03:58,210 --> 00:04:03,275
+that connects adjacent road intersection
+is often thought of as a road segment.,
+
+61
+00:04:03,275 --> 00:04:05,360
+okay, and so on.
+
+62
+00:04:05,360 --> 00:04:09,480
+Another concept that we will
+use is the notion of turns.
+
+63
+00:04:09,480 --> 00:04:12,210
+And if you have driven in urban areas,
+
+64
+00:04:12,210 --> 00:04:15,260
+you might have encountered
+many turn restrictions.
+
+65
+00:04:15,260 --> 00:04:19,550
+You know, it may say no left turn at this
+intersection if you're coming from north,
+
+66
+00:04:19,550 --> 00:04:22,650
+or no right turn if you're
+coming from south and so on.
+
+67
+00:04:22,650 --> 00:04:26,002
+Some of these turn restrictions may
+be due to one-way nature of the road,
+
+68
+00:04:26,002 --> 00:04:30,310
+all right, and other may be imposed
+just to make the traffic flow smoothly.
+
+69
+00:04:30,310 --> 00:04:31,520
+And so on, so there are many,
+
+70
+00:04:31,520 --> 00:04:35,030
+many concepts we used when
+dealing with road maps.
+
+71
+00:04:35,030 --> 00:04:39,990
+And all these concepts can be put together
+into an entity relationship diagram.
+
+72
+00:04:39,990 --> 00:04:43,090
+So we'll quickly show you
+a very big picture, you know
+
+73
+00:04:43,090 --> 00:04:48,060
+high level set of concepts that hopefully
+you know you have used before and
+
+74
+00:04:48,060 --> 00:04:50,870
+many of us use in day to day, life.
+
+75
+00:04:50,870 --> 00:04:52,800
+So first concept is road map.
+
+76
+00:04:52,800 --> 00:04:56,550
+You know, you may look at a large,
+you know, paper map, or you may go to and
+
+77
+00:04:56,550 --> 00:04:58,130
+look at a digital map.
+
+78
+00:04:58,130 --> 00:05:02,170
+And this road map as we just talked about,
+consists of many,
+
+79
+00:05:02,170 --> 00:05:07,348
+many road intersections, and
+many road segments, okay.
+
+80
+00:05:07,348 --> 00:05:09,210
+So an entity relationship diagram,
+you know, and
+
+81
+00:05:09,210 --> 00:05:13,410
+you'll see this chicken foot, it's saying
+a road map has many road intersections.
+
+82
+00:05:13,410 --> 00:05:16,050
+And same way a road map
+has many road segments,
+
+83
+00:05:16,050 --> 00:05:20,500
+each road segment may have two road
+intersections that it connects, 'kay?
+
+84
+00:05:20,500 --> 00:05:24,760
+Other interesting concepts are those
+of the notion of the streets and
+
+85
+00:05:24,760 --> 00:05:29,510
+roads themselves, which as you know
+are being shown as a box here, and
+
+86
+00:05:29,510 --> 00:05:33,520
+they can be modeled as a sequence
+of road segments, okay?
+
+87
+00:05:33,520 --> 00:05:37,270
+Turns may also be thought
+of as something imposed on
+
+88
+00:05:37,270 --> 00:05:40,580
+a sequence of road segments, okay?
+
+89
+00:05:40,580 --> 00:05:41,600
+And same with routes.
+
+90
+00:05:41,600 --> 00:05:44,580
+If you have your favorite
+route from home to work,
+
+91
+00:05:44,580 --> 00:05:49,450
+again that's often modeled as a sequence
+of road segments and intersections, okay?
+
+92
+00:05:49,450 --> 00:05:51,780
+You know other ideas may
+be points of interest.
+
+93
+00:05:51,780 --> 00:05:52,630
+On a road map,
+
+94
+00:05:52,630 --> 00:05:56,280
+often certain places of interest
+are highlighted such as airports, right?
+
+95
+00:05:56,280 --> 00:06:00,960
+Or downtowns, schools, and these
+are often part of this point of interest,
+
+96
+00:06:00,960 --> 00:06:03,380
+they often have an address.
+
+97
+00:06:03,380 --> 00:06:07,350
+In many countries, this address comes
+in the form of street address, so you
+
+98
+00:06:07,350 --> 00:06:12,770
+may give the name of the street and then a
+building number on that particular street.
+
+99
+00:06:12,770 --> 00:06:15,430
+But, you know, this is a new system,
+
+100
+00:06:15,430 --> 00:06:19,860
+it's only about 100 to 150 years old and
+countries like England and
+
+101
+00:06:19,860 --> 00:06:23,730
+US have gone through a lot of
+legislative process to systematize it.
+
+102
+00:06:23,730 --> 00:06:26,580
+But many other countries we
+don't have street address and
+
+103
+00:06:26,580 --> 00:06:30,200
+there your address may
+be much more simpler.
+
+104
+00:06:30,200 --> 00:06:33,390
+It may be based on a landmark but
+if you have a smartphone and GPS,
+
+105
+00:06:33,390 --> 00:06:36,480
+you can simply provide the latitude and
+longitude.
+
+106
+00:06:36,480 --> 00:06:40,370
+So these addresses may come in many forms,
+okay, and so on.
+
+107
+00:06:40,370 --> 00:06:44,960
+Another concept that we may visit
+later is the observational framework.
+
+108
+00:06:44,960 --> 00:06:49,790
+Nowadays we have lot of sensors on the
+road, and these sensors may be static or
+
+109
+00:06:49,790 --> 00:06:53,480
+moving, and they observe different
+properties of the road and so on.
+
+110
+00:06:53,480 --> 00:06:55,950
+And also in the map you need
+some kind of coordinate system.
+
+111
+00:06:55,950 --> 00:07:00,340
+Latititude longitude is one in
+order to specify these locations.
+
+112
+00:07:00,340 --> 00:07:05,040
+So they are showing you a rich site of
+concepts people may use to model roads.
+
+113
+00:07:05,040 --> 00:07:08,580
+And you know, we have just given
+you a few common concepts and
+
+114
+00:07:08,580 --> 00:07:12,070
+you can probably enrich this
+diagram with more concepts.
+
+115
+00:07:12,070 --> 00:07:15,850
+So let's now switch gears and
+look at the, the graph model, okay?
+
+116
+00:07:16,900 --> 00:07:19,040
+My entity-relationship
+diagram was very rich.
+
+117
+00:07:19,040 --> 00:07:21,250
+It could model many, many concepts.
+
+118
+00:07:21,250 --> 00:07:23,260
+Graph is a much simpler model, okay?
+
+119
+00:07:23,260 --> 00:07:26,230
+So let's first look at its
+mathematical definition and
+
+120
+00:07:26,230 --> 00:07:28,710
+then apply it to model roadmaps, okay?
+
+121
+00:07:28,710 --> 00:07:32,070
+So mathematically graph just is a pair.
+
+122
+00:07:32,070 --> 00:07:36,330
+Okay, it has two components,
+a graph G has two components.
+
+123
+00:07:36,330 --> 00:07:41,380
+The first symbol, V, stands for
+a set of nodes or vertices, okay.
+
+124
+00:07:41,380 --> 00:07:45,290
+The second symbol, E,
+stands for a set of edges.
+
+125
+00:07:45,290 --> 00:07:49,700
+And they model one binary
+relationship among vertices, okay.
+
+126
+00:07:49,700 --> 00:07:51,600
+So let's illustrate it to see, you know,
+
+127
+00:07:51,600 --> 00:07:54,840
+if you were to use this to model road map,
+what would they look like?
+
+128
+00:07:55,870 --> 00:07:59,970
+So here is the road map we saw before,
+which had many road intersections and
+
+129
+00:07:59,970 --> 00:08:02,230
+many road segments connecting them.
+
+130
+00:08:02,230 --> 00:08:07,290
+And one way to model it as a graph is to
+use road intersections as the nodes, and
+
+131
+00:08:07,290 --> 00:08:10,960
+road segments connecting edges and
+intersections as the edges.
+
+132
+00:08:10,960 --> 00:08:13,960
+And if you did that,
+the graph model may look like this.
+
+133
+00:08:13,960 --> 00:08:18,120
+So here you notice, you know,
+all these nodes and 7, and 4 and 5.
+
+134
+00:08:18,120 --> 00:08:20,810
+And these are modeling
+road intersections here.
+
+135
+00:08:20,810 --> 00:08:23,860
+Just to show that correspondence
+little bit easier let me
+
+136
+00:08:23,860 --> 00:08:28,832
+show you an overlay of these two
+images and it may look like this.
+
+137
+00:08:28,832 --> 00:08:32,260
+So you now see these nodes that
+we had in the graph they match up
+
+138
+00:08:32,260 --> 00:08:33,940
+with the road intersection.
+
+139
+00:08:33,940 --> 00:08:38,590
+And then the edges we have, they match
+up with the road segments, okay?
+
+140
+00:08:38,590 --> 00:08:41,230
+So this is one way to model roadmaps and
+
+141
+00:08:41,230 --> 00:08:44,340
+graphs, and
+it's a popular way to model that, okay?
+
+142
+00:08:44,340 --> 00:08:48,018
+It's often used for
+computing shortest path, okay?
+
+143
+00:08:48,018 --> 00:08:50,820
+Now, now when you look
+at this graph model and
+
+144
+00:08:50,820 --> 00:08:53,850
+you've tried to compare it with the
+entity-relationship model we showed you in
+
+145
+00:08:53,850 --> 00:08:58,450
+the last, dia, slide,
+you probably realized that this graph is
+
+146
+00:08:58,450 --> 00:09:02,710
+not modeling all the information in
+that entity-relationship diagram, right?
+
+147
+00:09:02,710 --> 00:09:07,290
+So we can do a very quick big picture
+comparison of the two models and
+
+148
+00:09:07,290 --> 00:09:10,410
+try to see the pros and cons, okay.
+
+149
+00:09:10,410 --> 00:09:12,980
+Before that, we'll also show you
+another example of graph model.
+
+150
+00:09:12,980 --> 00:09:16,810
+If you remember the River Network that
+we covered in the previous video,
+
+151
+00:09:16,810 --> 00:09:20,360
+where you had these major
+rivers in United States, and
+
+152
+00:09:20,360 --> 00:09:22,660
+we had a relationship called falls into.
+
+153
+00:09:22,660 --> 00:09:25,010
+Okay, that may be modeled
+as a graph like this.
+
+154
+00:09:25,010 --> 00:09:28,220
+So here,
+River Mississippi is maybe node 1.
+
+155
+00:09:28,220 --> 00:09:34,390
+River Missouri maybe node, another node,
+and this arrow might show you that this,
+
+156
+00:09:34,390 --> 00:09:37,070
+you know, large river falls
+into another river, okay?
+
+157
+00:09:37,070 --> 00:09:40,530
+So graph models can be used to model
+different spatial networks, but
+
+158
+00:09:40,530 --> 00:09:42,330
+they are simple, okay?
+
+159
+00:09:42,330 --> 00:09:44,370
+So going back to the road example, and
+
+160
+00:09:44,370 --> 00:09:48,240
+if you compare the entity-relationship
+diagram for the roads, and the graph model
+
+161
+00:09:48,240 --> 00:09:52,610
+for the roads, here are the strengths and
+weaknesses of graph models, okay?
+
+162
+00:09:52,610 --> 00:09:57,630
+So in terms of strength graph models
+have very, very nice mathematics.
+
+163
+00:09:57,630 --> 00:10:01,050
+In fact there is a whole branch of
+mathematics called graph theory
+
+164
+00:10:01,050 --> 00:10:04,060
+which has characterized many
+properties of the graph and
+
+165
+00:10:04,060 --> 00:10:06,840
+it has classified graphs
+into different kind.
+
+166
+00:10:06,840 --> 00:10:11,460
+And those properties can help us
+reason about graphs very well, okay?
+
+167
+00:10:11,460 --> 00:10:15,850
+So, for example when we compute shortest
+path, this mathematics can help us
+
+168
+00:10:15,850 --> 00:10:20,740
+tell whether the path returned by our
+algorithm is indeed the optimal or
+
+169
+00:10:20,740 --> 00:10:24,200
+shortest path, or whether it is not, okay?
+
+170
+00:10:24,200 --> 00:10:27,810
+The second strength is that
+the graphs have been very popular in
+
+171
+00:10:27,810 --> 00:10:28,950
+computer science.
+
+172
+00:10:28,950 --> 00:10:31,180
+And over the last 50 to 60 years,
+
+173
+00:10:31,180 --> 00:10:35,710
+computer scientists have designed very
+nice algorithms to manipulate graph.
+
+174
+00:10:35,710 --> 00:10:38,300
+So you know, you,
+you have enjoyed the fruits of those.
+
+175
+00:10:38,300 --> 00:10:41,780
+For example when you go to Google Maps and
+compute shortest path,
+
+176
+00:10:41,780 --> 00:10:46,720
+you probably don't realize how big a graph
+it is using to model road map of US.
+
+177
+00:10:46,720 --> 00:10:49,210
+Okay, that graph has billions of nodes,
+and
+
+178
+00:10:49,210 --> 00:10:52,660
+yet the shortest path is
+computed almost instantaneously.
+
+179
+00:10:52,660 --> 00:10:55,510
+You don't even feel the time it takes,
+right?
+
+180
+00:10:55,510 --> 00:10:58,560
+So those are the nice computational
+algorithms that have been designed over
+
+181
+00:10:58,560 --> 00:11:03,620
+the last 50, 60 years, and we can leverage
+those if you use graphs as the model.
+
+182
+00:11:03,620 --> 00:11:05,810
+Okay, but what's the down side?
+
+183
+00:11:05,810 --> 00:11:07,030
+Okay, and here is the down side.
+
+184
+00:11:07,030 --> 00:11:11,461
+If you think about that entity
+relationship diagram I showed you,
+
+185
+00:11:11,461 --> 00:11:15,350
+then graphs are modeling only
+a small part of that, okay?
+
+186
+00:11:15,350 --> 00:11:20,770
+And to be more precise, they are modeling
+only one binary relationship, okay?
+
+187
+00:11:20,770 --> 00:11:25,990
+So if you think of nodes as road
+intersections then this relationship could
+
+188
+00:11:25,990 --> 00:11:31,330
+be that a road segment connects to
+a different road intersection, okay?
+
+189
+00:11:31,330 --> 00:11:35,620
+But if you wanted to model another
+relationship, okay, besides connect.
+
+190
+00:11:35,620 --> 00:11:40,310
+If you want to model, let's say, turn
+restriction, then there is a quandary.
+
+191
+00:11:40,310 --> 00:11:44,160
+Okay, in a graph,
+you can only model one relationship well.
+
+192
+00:11:44,160 --> 00:11:48,100
+Okay, so trying to model two
+relationship adds complexity, and
+
+193
+00:11:48,100 --> 00:11:49,575
+I will illustrate that very quickly.
+
+194
+00:11:49,575 --> 00:11:54,330
+And in fact, in many traditional graph
+theory and graph algorithm scores,
+
+195
+00:11:54,330 --> 00:11:58,580
+you know, asking for
+a shortest path which minimizes turns or
+
+196
+00:11:58,580 --> 00:12:03,780
+has no left turn often confounds these
+computer scientists because that's
+
+197
+00:12:03,780 --> 00:12:07,060
+a limitation of graph, okay.
+
+198
+00:12:07,060 --> 00:12:09,270
+Another implication of
+this is the following.
+
+199
+00:12:09,270 --> 00:12:12,980
+Based on your preference for
+the relationship, right,
+
+200
+00:12:12,980 --> 00:12:15,780
+in other words you know if you
+look at your dominant queries.
+
+201
+00:12:15,780 --> 00:12:20,210
+And those, those queries are asking for
+you know a different set of
+
+202
+00:12:20,210 --> 00:12:22,995
+relationships than the one
+modeled by popular graph model.
+
+203
+00:12:22,995 --> 00:12:24,199
+Then, you have limitations.
+
+204
+00:12:24,199 --> 00:12:27,460
+Either you have to change
+your graph model or
+
+205
+00:12:27,460 --> 00:12:31,410
+look for multiple graph models for
+the same road network, okay?
+
+206
+00:12:31,410 --> 00:12:33,430
+So let's look at an example of both.
+
+207
+00:12:33,430 --> 00:12:36,071
+So let's first think about turn modeling,
+and
+
+208
+00:12:36,071 --> 00:12:39,560
+we all note modeling turns
+are important in road maps.
+
+209
+00:12:39,560 --> 00:12:44,640
+In fact you might have even seen a recent
+New York Times story that a major
+
+210
+00:12:44,640 --> 00:12:49,300
+logistics company, UPS, you know,
+they were looking for new ways to
+
+211
+00:12:49,300 --> 00:12:53,490
+minimize fuel consumption going beyond
+what Google Maps can do for you.
+
+212
+00:12:53,490 --> 00:12:57,010
+And one of the insights they had was
+that their trucks were spending a lot of
+
+213
+00:12:57,010 --> 00:13:00,860
+time idling on left turns
+in the United States, okay?
+
+214
+00:13:00,860 --> 00:13:02,240
+If you were in Britain, and, you know,
+
+215
+00:13:02,240 --> 00:13:05,350
+it may be the right turns, but
+usually the turns are asymmetric.
+
+216
+00:13:05,350 --> 00:13:09,290
+One turn usually is quicker because
+you don't have to wait, and
+
+217
+00:13:09,290 --> 00:13:13,050
+the other turn you have to wait for the
+opposite traffic to stop for you, okay?
+
+218
+00:13:13,050 --> 00:13:17,360
+And UPS noticed that and they redid
+their routes to reduce left turns in
+
+219
+00:13:17,360 --> 00:13:21,140
+United States and it saved them
+millions of gallons of fuel, okay?
+
+220
+00:13:21,140 --> 00:13:23,900
+So modeling turns
+are important societally.
+
+221
+00:13:23,900 --> 00:13:25,900
+If you imagine everybody else doing that,
+you know,
+
+222
+00:13:25,900 --> 00:13:28,330
+you could probably reduce fuel
+consumption in a much bigger way.
+
+223
+00:13:30,080 --> 00:13:32,460
+But how do we model that, okay?
+
+224
+00:13:32,460 --> 00:13:34,810
+So, so if you want to model that,
+
+225
+00:13:34,810 --> 00:13:36,860
+there are a couple of
+different approaches, okay?
+
+226
+00:13:36,860 --> 00:13:41,560
+One approach is to translate it back
+to the basic relationship connects and
+
+227
+00:13:41,560 --> 00:13:45,360
+some people have tried that, but
+it simply expands your graph a lot, so
+
+228
+00:13:45,360 --> 00:13:47,000
+let me illustrate that.
+
+229
+00:13:47,000 --> 00:13:49,440
+So if you remember,
+you know, this road map.
+
+230
+00:13:49,440 --> 00:13:51,030
+So you have many one ways here.
+
+231
+00:13:51,030 --> 00:13:55,800
+So, for example, if you think about this
+road intersection between this one-way and
+
+232
+00:13:55,800 --> 00:13:57,990
+a two-way,
+then there are turn restrictions.
+
+233
+00:13:57,990 --> 00:13:58,740
+For example, you know,
+
+234
+00:13:58,740 --> 00:14:03,630
+going this, up, like this, we cannot turn
+right, right, because that's a one way.
+
+235
+00:14:03,630 --> 00:14:07,170
+So if you want to model that, you know,
+you know, enter, so then what we can do is
+
+236
+00:14:07,170 --> 00:14:12,040
+to take the intersection N5, modeling
+this place, and expand it further.
+
+237
+00:14:12,040 --> 00:14:14,980
+Okay, expand it further
+into a bigger graph, okay?
+
+238
+00:14:14,980 --> 00:14:17,080
+And in that graph you will have many,
+
+239
+00:14:17,080 --> 00:14:20,870
+many extra edges modeling
+all possible turns, okay?
+
+240
+00:14:20,870 --> 00:14:22,680
+So, so in this graph, you know,
+
+241
+00:14:22,680 --> 00:14:26,140
+if, let's say you're going on this
+one way, it is going up here.
+
+242
+00:14:26,140 --> 00:14:28,950
+Then you know, this will allow you
+to turn in different direction.
+
+243
+00:14:28,950 --> 00:14:33,020
+It can take a right turn and you can,
+you know, take a left turn, okay?
+
+244
+00:14:33,020 --> 00:14:35,400
+However if I was going on this road, okay?
+
+245
+00:14:35,400 --> 00:14:38,960
+If I'm going on this road which
+are these two edges, then, you know,
+
+246
+00:14:38,960 --> 00:14:42,480
+I have a right turn available,
+but there is no left turn.
+
+247
+00:14:42,480 --> 00:14:43,820
+I cannot go back this way.
+
+248
+00:14:43,820 --> 00:14:45,430
+So that is just missing, okay?
+
+249
+00:14:45,430 --> 00:14:48,520
+So this is one way to model the turns.
+
+250
+00:14:48,520 --> 00:14:52,240
+And in this case, your sight of nodes and
+edges grows a lot.
+
+251
+00:14:52,240 --> 00:14:56,950
+So essentially this node N5 now has
+been replaced by six different notes and
+
+252
+00:14:56,950 --> 00:14:58,770
+a bunch of edges, okay?
+
+253
+00:14:58,770 --> 00:15:00,760
+So if you were to do that,
+your graph size will go up.
+
+254
+00:15:01,880 --> 00:15:06,315
+In addition, doing this is still,
+you know, for no U-turn is harder, okay,
+
+255
+00:15:06,315 --> 00:15:10,223
+because U-turn involves actually
+a sequence of more than two edges,
+
+256
+00:15:10,223 --> 00:15:11,410
+it's three edges.
+
+257
+00:15:11,410 --> 00:15:13,260
+So, it's a little harder here, okay?
+
+258
+00:15:13,260 --> 00:15:14,740
+So, there are some other approaches,
+as well.
+
+259
+00:15:14,740 --> 00:15:16,350
+You know, ideally,
+
+260
+00:15:16,350 --> 00:15:20,710
+we should switch to another notion
+called hyper-graphs and hyper-edges.
+
+261
+00:15:20,710 --> 00:15:24,960
+If you want to model U-turns, you may
+have to model three edges, and so on.
+
+262
+00:15:24,960 --> 00:15:29,129
+And that is very hard to model in
+regular graphs but hyper-edges and
+
+263
+00:15:29,129 --> 00:15:30,900
+hyper-graphs can do that.
+
+264
+00:15:30,900 --> 00:15:34,180
+Another approach is to
+actually go beyond graphs.
+
+265
+00:15:34,180 --> 00:15:38,110
+So whether you use graphs or
+hyper-graphs, we can actually annotate,
+
+266
+00:15:38,110 --> 00:15:42,570
+we can add some additional information
+to nodes like N5, the whole table.
+
+267
+00:15:42,570 --> 00:15:46,530
+Which lists all possible turns that
+there are delays and restrictions.
+
+268
+00:15:46,530 --> 00:15:50,460
+And this is something commercial
+systems like ESRI, have been,
+
+269
+00:15:50,460 --> 00:15:52,340
+you know have gone this way, okay?
+
+270
+00:15:52,340 --> 00:15:57,370
+But again the main point is that modeling
+multiple relationships is difficult and
+
+271
+00:15:57,370 --> 00:16:00,780
+we illustrated that by showing
+you the example of turn, okay?
+
+272
+00:16:02,010 --> 00:16:07,490
+Now another implication is that you know,
+if you take a single spatial road,
+
+273
+00:16:07,490 --> 00:16:11,540
+you know, spatial network,
+such as a road map, then it has, you know,
+
+274
+00:16:11,540 --> 00:16:13,630
+many, many different relationships.
+
+275
+00:16:13,630 --> 00:16:15,340
+And depending on your workload, or
+
+276
+00:16:15,340 --> 00:16:21,330
+your application, the priorities of those
+relationships may be different, okay?
+
+277
+00:16:21,330 --> 00:16:22,440
+So depending on, you know,
+
+278
+00:16:22,440 --> 00:16:26,280
+your favorite relationship,
+the graph model will also change.
+
+279
+00:16:26,280 --> 00:16:30,060
+Okay, so for the same roadmap you
+may see many different graph models.
+
+280
+00:16:30,060 --> 00:16:32,240
+And we're going to show
+you a couple of those.
+
+281
+00:16:32,240 --> 00:16:34,210
+The first one is the traditional one,
+
+282
+00:16:34,210 --> 00:16:37,740
+okay, where the nodes represented
+road intersections, and
+
+283
+00:16:37,740 --> 00:16:42,360
+the edges represented these road segments
+connecting edges and road intersection.
+
+284
+00:16:42,360 --> 00:16:44,530
+Okay, this is a very popular one.
+
+285
+00:16:44,530 --> 00:16:46,762
+And if you need to learn
+only one graph model for
+
+286
+00:16:46,762 --> 00:16:49,370
+road maps this is the one
+I will recommend, okay?
+
+287
+00:16:49,370 --> 00:16:51,620
+But we did see another choice.
+
+288
+00:16:51,620 --> 00:16:54,170
+You know,
+if you were to model turns, okay,
+
+289
+00:16:54,170 --> 00:16:58,690
+if you really were really interested in
+modeling turns, you were working for UPS.
+
+290
+00:16:58,690 --> 00:17:02,310
+And that's what, you know, your
+application was to minimize left turns
+
+291
+00:17:02,310 --> 00:17:06,780
+then what we could do is to use
+edges to model turn relationships.
+
+292
+00:17:06,780 --> 00:17:11,490
+But then your nodes may switch from
+road intersections to road segments,
+
+293
+00:17:11,490 --> 00:17:15,760
+because turns are relationships between
+road segments, which are adjacent, okay.
+
+294
+00:17:15,760 --> 00:17:18,450
+Of course, you know,
+you can have a third one, and
+
+295
+00:17:18,450 --> 00:17:22,410
+this model will remind you of the model
+we used for the river network.
+
+296
+00:17:22,410 --> 00:17:24,830
+You know, we could use,
+actually, other types of nodes.
+
+297
+00:17:24,830 --> 00:17:28,990
+So, for example, like, streets and
+avenues may be thought of as roads.
+
+298
+00:17:28,990 --> 00:17:31,620
+And the relationship may
+be that intersects, okay?
+
+299
+00:17:31,620 --> 00:17:34,270
+Now this kind of a model
+is sometimes used for
+
+300
+00:17:34,270 --> 00:17:37,180
+cartographic generalizations of road maps,
+okay?
+
+301
+00:17:37,180 --> 00:17:38,910
+So if you have a very large city,
+you know,
+
+302
+00:17:38,910 --> 00:17:42,030
+with many, many roads and
+then you have to zoom out, and you
+
+303
+00:17:42,030 --> 00:17:46,120
+have to only show a subset of the roads
+otherwise your picture may be cluttered.
+
+304
+00:17:46,120 --> 00:17:48,010
+So in order to identify the major roads,
+
+305
+00:17:48,010 --> 00:17:52,090
+which should be shown, this third
+representation may be of interest.
+
+306
+00:17:52,090 --> 00:17:54,760
+Because you often prefer
+the roads which have,
+
+307
+00:17:54,760 --> 00:18:00,300
+which cover many other smaller streets,
+you know, which they intersect with, okay?
+
+308
+00:18:00,300 --> 00:18:04,480
+So again, to summarize what we
+looked at were conceptual and
+
+309
+00:18:04,480 --> 00:18:07,900
+information models for roadmaps.
+
+310
+00:18:07,900 --> 00:18:12,890
+And we saw that at a detailed information
+level called entity-relationship diagram
+
+311
+00:18:12,890 --> 00:18:15,680
+where we can represent many,
+many concepts in roads,
+
+312
+00:18:15,680 --> 00:18:21,290
+such as streets, road intersections,
+you know, road segments, turns, et cetera.
+
+313
+00:18:21,290 --> 00:18:25,650
+Then we looked at graph models which
+are nice clean mathematical model and
+
+314
+00:18:25,650 --> 00:18:29,480
+also have been used in computer science
+to design many scalable algorithm.
+
+315
+00:18:29,480 --> 00:18:32,410
+And we looked at the pros and
+cons of graph models.
+
+316
+00:18:32,410 --> 00:18:34,390
+So even though it has very
+nice mathematical and
+
+317
+00:18:34,390 --> 00:18:37,480
+computational properties,
+it has limitations.
+
+318
+00:18:37,480 --> 00:18:40,150
+It can only model one relationship.
+
+319
+00:18:40,150 --> 00:18:41,240
+And you have to choose which one.
+
+320
+00:18:41,240 --> 00:18:41,740
+Okay?
+
+321
+00:18:43,300 --> 00:18:46,590
+And based on your application, if you
+are doing cartographic generalization you
+
+322
+00:18:46,590 --> 00:18:48,790
+may choose nodes and edges in one way.
+
+323
+00:18:48,790 --> 00:18:51,870
+If you are doing some shortest path,
+you may choose them in a different way.
+
+324
+00:18:53,170 --> 00:18:53,730
+So, with this,
+
+325
+00:18:53,730 --> 00:18:57,490
+we'll wrap up the discussion of
+conceptual models of street networks.
+
+326
+00:18:57,490 --> 00:19:02,200
+When we come back, in the next segment,
+we will look at logical models and
+
+327
+00:19:02,200 --> 00:19:06,180
+look at query languages for,
+spatial networks.
+
+328
+00:19:06,180 --> 00:19:10,180
+And then we'll follow it up with
+another video on the physical model,
+
+329
+00:19:10,180 --> 00:19:13,210
+the data structures and
+algorithms of spatial network.
+
+330
+00:19:13,210 --> 00:19:15,670
+So look forward to seeing
+you in the next few videos.
+
+331
+00:19:15,670 --> 00:19:16,170
+Thank you.
+

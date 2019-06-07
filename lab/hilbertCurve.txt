@@ -1,0 +1,134 @@
+void horder(int order, int& value, int coor[2])
+	{
+		int dem = (int)pow(2, order);
+		// order = 1
+		//int num = int(pow(2, 1));
+		//int * hcurve = new int[num * num];
+		int** g;
+		g = (int**)malloc((int)pow(2, order) * sizeof(int*));
+		for (int i = 0; i < (int)pow(2, order); i++) {
+			*(g + i) = (int *)malloc((int)pow(2, order) * sizeof(int *));
+		}
+		g[0][0] = 0; g[0][1] = 3;
+		g[1][0] = 1; g[1][1] = 2;
+
+		//hcurve[2] = 0; hcurve[3] = 3;
+		//hcurve[0] = 1; hcurve[1] = 2;
+
+		for (int i = 2; i <= order; i++) {
+			int add = (int)pow(2, 2 * i - 2);		// the number of values in order - 1
+			int blockLen = (int)pow(2, i - 1);
+			//int * temp = hcurve;
+
+			//num = int(pow(2, i));
+			//hcurve = new int[num * num];
+
+			for (int j = 0; j < blockLen;j++) {
+				for (int k = 0; k < blockLen; k++) {
+					// Task 2.1 horder，修改以下四行代码
+					//hcurve[j * num + k] = temp[j*num + k];
+					//hcurve[j* num + k + blockLen] = temp[j*num + k] + add;
+					//hcurve[j* num + k + 2 * blockLen] = temp[j*num + k] + 2 * add;
+					//hcurve[3 * blockLen - 2 - k - j] = temp[j*num + k] + 3 * add;
+					g[j + blockLen][k] = g[j][k] + add; //第1象限对应的网格
+					g[j + blockLen][k + blockLen] = g[j][k] + 2 * add; //第2象限对应的网格
+					g[blockLen - 1 - k][blockLen * 2 - 1 - j] = g[j][k] + 3 * add;//第3象限对应的网格
+				}
+				
+			}
+			for (int j = 0; j < blockLen; j++) //第0象限对应的网格
+				for (int k = 0; k <= j; k++)
+				{
+					int temp = g[j][k];
+					g[j][k] = g[k][j];   //按斜对角线翻转
+					g[k][j] = temp;
+				}
+			//delete temp;
+		}
+		
+		// Task 2.1 horder，修改以下一行代码
+		value = g[coor[1]][coor[0]];
+		//delete hcurve;
+		for (int i = 0; i < (int)pow(2, order); ++i)
+		{
+			free(*(g + i));
+		}
+		free(g);
+	}
+
+	/*
+	 * ihorder - Calculate the coordinate of the point with given H-value and order
+	 */
+	void ihorder(int order, int  value, int coor[])
+	{
+		int num = int(pow(2, 1));
+		int dem = (int)pow(2, order);
+		//int * hcurve = new int[num * num];
+		//hcurve[0] = 1;
+		//hcurve[1] = 2;
+		//hcurve[2] = 0;
+		//hcurve[3] = 3;
+
+		// Task 2.2 ihorder
+		// Write your code here
+		//int num = int(pow(2, 1));
+		//int * hcurve = new int[num * num];
+		int** g;
+		g = (int**)malloc((int)pow(2, order) * sizeof(int*));
+		for (int i = 0; i < (int)pow(2, order); i++) {
+			*(g + i) = (int *)malloc((int)pow(2, order) * sizeof(int *));
+		}
+		g[0][0] = 0; g[0][1] = 3;
+		g[1][0] = 1; g[1][1] = 2;
+
+		//hcurve[2] = 0; hcurve[3] = 3;
+		//hcurve[0] = 1; hcurve[1] = 2;
+
+		for (int i = 2; i <= order; i++) {
+			int add = (int)pow(2, 2 * i - 2);		// the number of values in order - 1
+			int blockLen = (int)pow(2, i - 1);
+			//int * temp = hcurve;
+
+			num = int(pow(2, i));
+			//hcurve = new int[num * num];
+
+			for (int j = 0; j < blockLen; j++) {
+				for (int k = 0; k < blockLen; k++) {
+					// Task 2.1 horder，修改以下四行代码
+					//hcurve[j * num + k] = temp[j*num + k];
+					//hcurve[j* num + k + blockLen] = temp[j*num + k] + add;
+					//hcurve[j* num + k + 2 * blockLen] = temp[j*num + k] + 2 * add;
+					//hcurve[3 * blockLen - 2 - k - j] = temp[j*num + k] + 3 * add;
+					g[j + blockLen][k] = g[j][k] + add; //第1象限对应的网格
+					g[j + blockLen][k + blockLen] = g[j][k] + 2 * add; //第2象限对应的网格
+					g[blockLen - 1 - k][blockLen * 2 - 1 - j] = g[j][k] + 3 * add;//第3象限对应的网格
+				}			
+			}
+			for (int j = 0; j < blockLen; j++) //第0象限对应的网格
+				for (int k = 0; k <= j; k++)
+				{
+					int temp = g[j][k];
+					g[j][k] = g[k][j];   //按斜对角线翻转
+					g[k][j] = temp;
+				}
+			//delete temp;
+		}
+	
+		// Task 2.1 horder，修改以下一行代码
+		for(int i=0;i<(int)pow(2,order);i++)
+			for (int j = 0; j < (int)pow(2, order); j++)
+			{
+				if (g[i][j] == value)
+				{
+					*coor = j;
+					*(coor + 1) = i;
+					
+				}
+			}
+		//delete hcurve;
+		for (int i = 0; i < (int)pow(2, order); ++i)
+		{
+			free(*(g + i));
+		}
+		free(g);
+	}

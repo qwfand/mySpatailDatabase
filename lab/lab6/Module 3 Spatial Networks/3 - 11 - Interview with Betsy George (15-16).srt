@@ -1,0 +1,1388 @@
+1
+00:00:00,190 --> 00:00:03,710
+Welcome back to the discussion
+of spatial computing.
+
+2
+00:00:03,710 --> 00:00:09,310
+Today we are going to meet Dr.
+Betsy George, at Oracle Spatial and
+
+3
+00:00:09,310 --> 00:00:14,930
+share and learn from her, you know the
+excitement of spatial computing at Oracle,
+
+4
+00:00:14,930 --> 00:00:17,930
+a popular product which we have
+mentioned several times in this course.
+
+5
+00:00:17,930 --> 00:00:18,800
+Okay?
+
+6
+00:00:18,800 --> 00:00:21,190
+So please say hello,
+to Doctor Betsy George.
+
+7
+00:00:22,450 --> 00:00:22,950
+>> Hi.
+
+8
+00:00:24,630 --> 00:00:27,960
+>> So Betsy, you know the first question
+we wanted to ask you is, you know,
+
+9
+00:00:27,960 --> 00:00:29,480
+coming from a broad mathematics and
+
+10
+00:00:29,480 --> 00:00:33,340
+computer science background, how did
+you get started with spatial computing?
+
+11
+00:00:34,600 --> 00:00:37,820
+>> I came into spatial computing
+through my interest in graph theory.
+
+12
+00:00:38,970 --> 00:00:39,920
+So graphs.
+
+13
+00:00:39,920 --> 00:00:42,300
+I have always been impressed with them.
+
+14
+00:00:42,300 --> 00:00:46,500
+Expressiveness and
+the simplicity of the model called graph.
+
+15
+00:00:46,500 --> 00:00:52,620
+And so I got introduced to graphs
+at the very early stage and
+
+16
+00:00:52,620 --> 00:00:55,850
+then, I was looking at, when I was
+starting my research I was looking for
+
+17
+00:00:55,850 --> 00:00:57,785
+some real world applications of graphs.
+
+18
+00:00:57,785 --> 00:00:58,600
+>> Mm-hm.
+
+19
+00:00:58,600 --> 00:01:01,270
+>> So then I got introduced
+to transportation networks,
+
+20
+00:01:01,270 --> 00:01:07,820
+which are basically spatial networks and
+and my first familiarization
+
+21
+00:01:07,820 --> 00:01:13,230
+with transportation at work was through
+a study of evacuation planning algorithms.
+
+22
+00:01:13,230 --> 00:01:16,990
+And so when I studied the problem,
+a little bit,
+
+23
+00:01:16,990 --> 00:01:21,750
+I realized the challenges that the real
+world application domains brought,
+
+24
+00:01:21,750 --> 00:01:26,210
+to this world of graph theory,
+and I was really excited and
+
+25
+00:01:26,210 --> 00:01:31,910
+impressed by the way, we needed to
+re-evaluate the algorithms with.
+
+26
+00:01:31,910 --> 00:01:35,950
+In terms of the assumptions that we made,
+when we designed graph algorithms.
+
+27
+00:01:35,950 --> 00:01:36,810
+>> Okay.
+
+28
+00:01:36,810 --> 00:01:41,600
+>> We needed to reformulate them
+to suit the applications better.
+
+29
+00:01:41,600 --> 00:01:46,280
+To be more specific in terms of the
+evacuation planning algorithm the aim was
+
+30
+00:01:46,280 --> 00:01:49,766
+to evacuate the people as
+fast as possible, so for a,
+
+31
+00:01:49,766 --> 00:01:54,710
+from the graph theory perspective,
+that would immediately you know,
+
+32
+00:01:54,710 --> 00:01:59,580
+let me choose the shortest path, or the
+fastest path, algorithm, and apply that.
+
+33
+00:01:59,580 --> 00:02:01,840
+But, then I realized that
+that's not going to work,
+
+34
+00:02:01,840 --> 00:02:06,020
+because the roads have capacities and
+you cannot push everybody to move,
+
+35
+00:02:06,020 --> 00:02:09,500
+along the same shortest path possible
+from the source to the destination.
+
+36
+00:02:09,500 --> 00:02:15,240
+So, we needed to take care of the capacity
+constraints, which is not really.
+
+37
+00:02:15,240 --> 00:02:19,010
+Taken into account in any of the,
+shortest path algorithms that I knew of.
+
+38
+00:02:19,010 --> 00:02:23,630
+So that was one example, where graph
+theory really met the real world
+
+39
+00:02:23,630 --> 00:02:28,790
+application and
+that opened up a lot of possibilities for
+
+40
+00:02:28,790 --> 00:02:33,897
+interrogation of the assumptions that
+we're behind the graph theory algorithms.
+
+41
+00:02:33,897 --> 00:02:34,760
+So.
+
+42
+00:02:34,760 --> 00:02:38,170
+To put it shortly, I was, I was,
+
+43
+00:02:38,170 --> 00:02:44,070
+I became interested in special
+computing through special networks.
+
+44
+00:02:44,070 --> 00:02:44,730
+>> Okay.
+
+45
+00:02:44,730 --> 00:02:49,870
+>> And so then I started seeing the lot
+of challenges that are raised by,
+
+46
+00:02:49,870 --> 00:02:53,210
+you know, the,
+when you bring location into computations.
+
+47
+00:02:53,210 --> 00:02:54,410
+>> Okay.
+
+48
+00:02:54,410 --> 00:02:56,840
+>> And how to effectively use that, and
+
+49
+00:02:56,840 --> 00:03:00,630
+so, it's been,
+it's been a really exacting journey.
+
+50
+00:03:00,630 --> 00:03:05,390
+We've started off, with spartial networks
+which, which are like the real networks.
+
+51
+00:03:05,390 --> 00:03:06,700
+>> Oh.
+Won, wonderful.
+
+52
+00:03:06,700 --> 00:03:09,710
+So in this course, you know,
+we did discuss shortest path.
+
+53
+00:03:09,710 --> 00:03:10,320
+>> Okay.
+>> And
+
+54
+00:03:10,320 --> 00:03:14,240
+I'm guessing lot of people in this course,
+have used services like Google Maps.
+
+55
+00:03:14,240 --> 00:03:16,210
+>> Yes.
+>> Or the GPS devices to find.
+
+56
+00:03:16,210 --> 00:03:17,370
+>> Sure.
+>> Shortest path.
+
+57
+00:03:17,370 --> 00:03:18,170
+>> Sure.
+>> So, it,
+
+58
+00:03:18,170 --> 00:03:21,030
+it may be nice to kind of briefly,
+you know, re you know,
+
+59
+00:03:21,030 --> 00:03:22,790
+revisit the evacuation scenario.
+
+60
+00:03:22,790 --> 00:03:25,770
+So let's say everybody living
+in Boston had to leave.
+
+61
+00:03:25,770 --> 00:03:27,630
+>> Sure.
+>> Because of a major hurricane.
+
+62
+00:03:27,630 --> 00:03:28,290
+>> Sure.
+
+63
+00:03:28,290 --> 00:03:29,960
+>> And
+if they all just went to Google, and
+
+64
+00:03:29,960 --> 00:03:34,620
+found shortest path to their destination,
+maybe, in New York City or in Albany.
+
+65
+00:03:34,620 --> 00:03:35,930
+>> Yeah. [LAUGH] >> What would go wrong?
+
+66
+00:03:35,930 --> 00:03:37,230
+I mean, why not do that?
+
+67
+00:03:37,230 --> 00:03:39,160
+>> Oh, you you will see, like,
+
+68
+00:03:39,160 --> 00:03:42,392
+cars backed up all the way to
+the place where you started.
+
+69
+00:03:42,392 --> 00:03:43,477
+[LAUGH] Because, you know?
+
+70
+00:03:43,477 --> 00:03:44,893
+Everybody's going to drive out, and-
+
+71
+00:03:44,893 --> 00:03:46,160
+>> Okay.
+You know, if you ask them to
+
+72
+00:03:46,160 --> 00:03:51,406
+move the fastest route possible, then you
+know, everybody's going to be there and
+
+73
+00:03:51,406 --> 00:03:55,660
+you know like the roads will get congested
+and the traffic will get backed up.
+
+74
+00:03:55,660 --> 00:04:00,040
+So you have to take care of you know,
+the capacity as
+
+75
+00:04:01,080 --> 00:04:05,081
+the roads get used more and more.The
+congestion increases the traffic time,
+
+76
+00:04:05,081 --> 00:04:09,920
+the travel time gets increased so that
+fastest pack itself changes based on that.
+
+77
+00:04:09,920 --> 00:04:11,925
+So, that had to be taken into account.
+
+78
+00:04:11,925 --> 00:04:13,950
+>> Okay
+>> So somehow, so
+
+79
+00:04:13,950 --> 00:04:19,520
+that added a new dimension to
+the [INAUDIBLE] algorithm, so.
+
+80
+00:04:19,520 --> 00:04:23,566
+>> So, so, I guess graphs have been
+extended to model age capacity, as well,
+
+81
+00:04:23,566 --> 00:04:27,260
+so is there like a general
+family of graph models which.
+
+82
+00:04:27,260 --> 00:04:28,810
+>> Yes
+>> Capacity into account?
+
+83
+00:04:28,810 --> 00:04:34,310
+>> Yes you know, for example my
+research was actually to look at the,
+
+84
+00:04:34,310 --> 00:04:37,320
+the changes that the,
+the graph can change,
+
+85
+00:04:37,320 --> 00:04:42,330
+the whole assumption that the graph can
+change as the network is getting used.
+
+86
+00:04:42,330 --> 00:04:48,300
+And so the temperature changes of
+the graph needed to be taken into account,
+
+87
+00:04:48,300 --> 00:04:50,240
+in the algorithms themselves.
+
+88
+00:04:50,240 --> 00:04:53,770
+Like so when you do the computation,
+you have to keep track of the changes.
+
+89
+00:04:53,770 --> 00:04:55,600
+>> Right.
+>> That take place to the graph.
+
+90
+00:04:55,600 --> 00:04:56,930
+>> Okay.
+>> So that brings in,
+
+91
+00:04:56,930 --> 00:05:00,730
+in the, the, the temporal graph concept.
+
+92
+00:05:00,730 --> 00:05:06,140
+And so the algorithms needed to
+be re-examined, in that light.
+
+93
+00:05:06,140 --> 00:05:07,280
+>> Very wonderful.
+
+94
+00:05:07,280 --> 00:05:10,540
+And I think your encyclopedia
+article on road networks,
+
+95
+00:05:10,540 --> 00:05:12,932
+is going to be one of
+the supplementary readings,.
+
+96
+00:05:12,932 --> 00:05:13,830
+>> Okay. [LAUGH] >> For this course.
+
+97
+00:05:13,830 --> 00:05:15,810
+So hopefully,
+some of that is going to relate back and
+
+98
+00:05:15,810 --> 00:05:17,510
+they can see the temporal part also.
+
+99
+00:05:17,510 --> 00:05:19,590
+That is wonderful.
+
+100
+00:05:19,590 --> 00:05:21,050
+So the next question, you know?
+
+101
+00:05:21,050 --> 00:05:24,070
+What kinds of things are you working
+now a days at Oracle Spartial and
+
+102
+00:05:24,070 --> 00:05:28,610
+could you also tell us a little bit more
+about Oracle Spartial from you know?
+
+103
+00:05:28,610 --> 00:05:30,670
+As perspective of somebody
+working in the group?
+
+104
+00:05:32,170 --> 00:05:35,570
+>> So our special basically you know,
+
+105
+00:05:35,570 --> 00:05:39,370
+provides support for article,
+for spatial data types.
+
+106
+00:05:39,370 --> 00:05:42,140
+You know, we do have like you know,
+special data types.
+
+107
+00:05:42,140 --> 00:05:47,350
+Like we support coordinate systems and
+and most, commonly used
+
+108
+00:05:47,350 --> 00:05:54,110
+spatial operations like you can find
+nearest neighbors, you can you know the,
+
+109
+00:05:54,110 --> 00:05:58,560
+the fastest route from point A to
+point B and stuff like that.
+
+110
+00:05:58,560 --> 00:06:02,540
+And also, we do have as
+a part of the oracle spatial,
+
+111
+00:06:02,540 --> 00:06:04,850
+we do have a specialization
+tool called Map Viewer.
+
+112
+00:06:04,850 --> 00:06:09,510
+Which is being extensively used to
+visualise, maps and any spatial data for
+
+113
+00:06:09,510 --> 00:06:14,950
+that matter and I specifically work
+in the network data model team, so
+
+114
+00:06:14,950 --> 00:06:18,820
+I was kind of fortunate enough to find
+a job, which actually makes use of my
+
+115
+00:06:18,820 --> 00:06:24,060
+research and, you know, cool to actually,
+like, carry my research into the industry.
+
+116
+00:06:24,060 --> 00:06:24,800
+So I.
+
+117
+00:06:24,800 --> 00:06:29,340
+work in the network data model team and
+the network data model basically,
+
+118
+00:06:29,340 --> 00:06:34,250
+provides the facilities to represent
+networks or graphs in the database.
+
+119
+00:06:34,250 --> 00:06:37,560
+And so there is a database
+representation for networks.
+
+120
+00:06:37,560 --> 00:06:40,650
+And on top of that there
+are analysis capabilities provided.
+
+121
+00:06:41,830 --> 00:06:43,560
+So most of the.
+
+122
+00:06:43,560 --> 00:06:46,640
+Most commonly used graph
+operations are being
+
+123
+00:06:46,640 --> 00:06:49,230
+offered like weekend computer's pack.
+
+124
+00:06:49,230 --> 00:06:49,790
+>> Okay.
+
+125
+00:06:49,790 --> 00:06:51,400
+>> We do traveling salesman problem.
+
+126
+00:06:51,400 --> 00:06:52,590
+>> Okay.
+
+127
+00:06:52,590 --> 00:06:55,910
+>> And then we do have the network
+[INAUDIBLE] of the most
+
+128
+00:06:55,910 --> 00:06:57,000
+spatial operations.
+
+129
+00:06:57,000 --> 00:06:58,545
+Like you can find near this neighbors.
+
+130
+00:06:58,545 --> 00:07:04,440
+>> Okay But then cost analysis, drive time
+polygons, all based on network costs.
+
+131
+00:07:04,440 --> 00:07:05,190
+>> Okay, so-
+
+132
+00:07:05,190 --> 00:07:07,720
+>> That is the basic thing
+that our group does.
+
+133
+00:07:07,720 --> 00:07:10,420
+So what my specific work has been,
+
+134
+00:07:10,420 --> 00:07:14,260
+again, they're adding a temporal
+dimension to the near data model.
+
+135
+00:07:14,260 --> 00:07:14,840
+>> How wonderful.
+
+136
+00:07:14,840 --> 00:07:17,930
+>> which it didn't have
+a time aspect to it before.
+
+137
+00:07:17,930 --> 00:07:20,680
+>> Okay.
+>> So, making the graphs time aware and
+
+138
+00:07:20,680 --> 00:07:23,260
+the com,
+the network computations time aware.
+
+139
+00:07:23,260 --> 00:07:26,080
+Actually opens up a lot of possibilities.
+
+140
+00:07:26,080 --> 00:07:29,750
+For example, the simplest case would
+be a traveling salesman problem.
+
+141
+00:07:29,750 --> 00:07:35,360
+And when you use them as a computing
+trucking route to visit like four cities,
+
+142
+00:07:36,670 --> 00:07:41,340
+if you, if the application is time then we
+can actually insist that the trucker get.
+
+143
+00:07:41,340 --> 00:07:45,010
+Visit a certain city,
+in a certain period of time.
+
+144
+00:07:45,010 --> 00:07:47,152
+And sometimes, that becomes a necessity.
+
+145
+00:07:47,152 --> 00:07:48,900
+>> Like Russia and so on.
+
+146
+00:07:48,900 --> 00:07:52,130
+>> Yes, Russia was, and also,
+there are some, you know, there are some
+
+147
+00:07:52,130 --> 00:07:57,220
+restrictions like, you need to visit this
+particular place but on a certain day.
+
+148
+00:07:57,220 --> 00:08:01,830
+So you can actually can incorporate
+that constraint, if Time of it.
+
+149
+00:08:01,830 --> 00:08:04,380
+Then, as we mentioned earlier,
+
+150
+00:08:04,380 --> 00:08:08,290
+the other application would be
+incorporating time in such a way that
+
+151
+00:08:08,290 --> 00:08:13,960
+the graph itself is modified and
+handled in such a way that it can change.
+
+152
+00:08:13,960 --> 00:08:17,930
+So the graph changes with time,
+for example the condition.
+
+153
+00:08:17,930 --> 00:08:21,380
+So-
+traffic data is out there, now, so.
+
+154
+00:08:21,380 --> 00:08:27,070
+We do have the facility to incorporate
+the changes in the traffic volume as,
+
+155
+00:08:27,070 --> 00:08:29,100
+during, like at different times of day.
+
+156
+00:08:29,100 --> 00:08:29,760
+>> Oh, okay.
+
+157
+00:08:29,760 --> 00:08:32,970
+>> And,
+based on that the travel time changes, so
+
+158
+00:08:32,970 --> 00:08:37,270
+we can actually compute the fastest
+time if you start at 8 a.m.
+
+159
+00:08:37,270 --> 00:08:38,466
+in the morning
+>> Oh, wonderful [INAUDIBLE].
+
+160
+00:08:38,466 --> 00:08:40,980
+[LAUGH]
+>> Versus, like, in the midnight.
+
+161
+00:08:40,980 --> 00:08:42,380
+>> Okay.
+>> And you might even get two
+
+162
+00:08:42,380 --> 00:08:46,075
+different roads when you compute these two
+different roads at two different times.
+
+163
+00:08:46,075 --> 00:08:47,400
+>> [INAUDIBLE].
+
+164
+00:08:47,400 --> 00:08:49,010
+So, so
+
+165
+00:08:49,010 --> 00:08:53,400
+I am basically focusing more on the the
+temporal aspect of the network data model.
+
+166
+00:08:53,400 --> 00:08:56,260
+We also have a little
+bit of a support form of
+
+167
+00:08:56,260 --> 00:08:59,820
+routes which again brings in time
+because everything is schedule based.
+
+168
+00:09:02,010 --> 00:09:05,428
+So you already kind of gave answer to
+the next question I was going to ask.
+
+169
+00:09:05,428 --> 00:09:09,860
+[LAUGH] Which was, so, you remember
+chapter six in the Spatial Database book,
+
+170
+00:09:09,860 --> 00:09:13,470
+which had a very basic model of,
+transportation networks and
+
+171
+00:09:13,470 --> 00:09:14,720
+tons of graphs.
+
+172
+00:09:14,720 --> 00:09:17,950
+So the basic question was,
+when you see the.
+
+173
+00:09:17,950 --> 00:09:21,320
+Graph model or the spatial electric
+model in our electric space vehicle,
+
+174
+00:09:21,320 --> 00:09:24,080
+versus what you see in
+the [INAUDIBLE] textbooks,
+
+175
+00:09:24,080 --> 00:09:26,880
+what are the things which are common and
+what are the things which are different?
+
+176
+00:09:28,530 --> 00:09:31,070
+>> The basics of the common,
+the basics are very common,
+
+177
+00:09:31,070 --> 00:09:36,350
+we do have nodes that are just nodes and
+legs, so we do have entities which are.
+
+178
+00:09:36,350 --> 00:09:40,180
+Represented by nodes, like which could
+be like intersections of roads or
+
+179
+00:09:40,180 --> 00:09:40,810
+like cities.
+
+180
+00:09:41,840 --> 00:09:44,920
+But and also like we do have
+connections between nodes.
+
+181
+00:09:44,920 --> 00:09:46,320
+They can be any relationship.
+
+182
+00:09:46,320 --> 00:09:48,360
+So in the case of a road network if.
+
+183
+00:09:48,360 --> 00:09:50,280
+One node is reachable from another node,
+
+184
+00:09:50,280 --> 00:09:53,090
+we connect them through using an edge or
+a link.
+
+185
+00:09:53,090 --> 00:09:55,990
+So in the basic debt work
+data model in article on,
+
+186
+00:09:55,990 --> 00:09:59,830
+so like, we do have node table, which is
+a database at a percentage of nodes and
+
+187
+00:09:59,830 --> 00:10:05,450
+the link table which actually provides
+the connectivity between nodes and but.
+
+188
+00:10:06,980 --> 00:10:08,100
+Right now.
+
+189
+00:10:08,100 --> 00:10:09,300
+The things is, like you know?
+
+190
+00:10:09,300 --> 00:10:13,220
+The, the text book model actually
+treats the graph as static.
+
+191
+00:10:13,220 --> 00:10:14,490
+>> Okay.
+>> Nothing changes.
+
+192
+00:10:14,490 --> 00:10:15,080
+>> Okay.
+>> So,
+
+193
+00:10:15,080 --> 00:10:18,820
+you do have one edge between node one and
+node two.
+
+194
+00:10:18,820 --> 00:10:20,240
+And you actually.
+
+195
+00:10:20,240 --> 00:10:22,440
+Have one parameter called
+cost on that link.
+
+196
+00:10:22,440 --> 00:10:25,280
+So the underlying assumption is
+that the cost doesn't change.
+
+197
+00:10:25,280 --> 00:10:26,260
+>> Okay.
+>> But
+
+198
+00:10:26,260 --> 00:10:30,070
+we do have a mechanism right now
+to actually represent the cost in
+
+199
+00:10:30,070 --> 00:10:33,330
+such a way that it actually shows
+a variation with respect to time.
+
+200
+00:10:33,330 --> 00:10:34,100
+>> That's wonderful.
+
+201
+00:10:34,100 --> 00:10:38,860
+>> So that is, that is one of the most
+striking differences I would say.
+
+202
+00:10:38,860 --> 00:10:40,140
+It has.
+>> Indeed, indeed, wonderful.
+
+203
+00:10:40,140 --> 00:10:42,850
+And I think your encyclopedia article
+gives a little glimpse of that.
+
+204
+00:10:42,850 --> 00:10:43,490
+>> Sure.
+
+205
+00:10:43,490 --> 00:10:44,500
+Wonderful.
+
+206
+00:10:44,500 --> 00:10:47,520
+Now looking ahead, you know,
+next five to seven years, what
+
+207
+00:10:47,520 --> 00:10:53,200
+are the major directions in Oracle Spatial
+and you know, in your own networks module.
+
+208
+00:10:55,020 --> 00:11:00,450
+>> I think, when I think about it in
+a very generic way I think like you know,
+
+209
+00:11:01,580 --> 00:11:03,040
+to go more on.
+
+210
+00:11:03,040 --> 00:11:04,380
+To kind of like,.
+
+211
+00:11:04,380 --> 00:11:07,230
+Expand more on this
+changing graph paradigm.
+
+212
+00:11:09,400 --> 00:11:11,820
+People are collecting data every day.
+
+213
+00:11:11,820 --> 00:11:16,610
+And you know, like in a, if you use a, you
+know, an online navigation system like,
+
+214
+00:11:16,610 --> 00:11:18,830
+and everybody's like, saying that okay.
+
+215
+00:11:18,830 --> 00:11:21,770
+If I don't take this road because
+it's congested and, you know,
+
+216
+00:11:21,770 --> 00:11:24,310
+this is the travel time and, you know, so.
+
+217
+00:11:24,310 --> 00:11:27,820
+And, and big companies like no,
+Nokia's like putting data out there.
+
+218
+00:11:27,820 --> 00:11:30,820
+So, there is a lot of data coming in.
+
+219
+00:11:30,820 --> 00:11:32,770
+>> Okay.
+>> And so.
+
+220
+00:11:32,770 --> 00:11:35,430
+We need to some how
+incorporate this into our
+
+221
+00:11:35,430 --> 00:11:38,280
+computations to make
+computations more meaningful.
+
+222
+00:11:38,280 --> 00:11:39,020
+>> Okay.
+
+223
+00:11:39,020 --> 00:11:44,910
+So I think we need to have a mechanism
+to somehow use this data meaningfully,
+
+224
+00:11:44,910 --> 00:11:49,540
+but at the same time it's the volume
+is growing so drastically.
+
+225
+00:11:49,540 --> 00:11:53,220
+So we need to do somehow make
+the computation section.
+
+226
+00:11:53,220 --> 00:11:55,200
+So I think big data is here, you know so
+
+227
+00:11:55,200 --> 00:11:59,780
+that I think that,
+that is going to sort of like.
+
+228
+00:11:59,780 --> 00:12:00,810
+Creeping every where.
+
+229
+00:12:00,810 --> 00:12:03,250
+>> Yeah. Okay. >> So,
+we need to explore that.
+
+230
+00:12:03,250 --> 00:12:04,170
+>> Okay.
+>> And how we
+
+231
+00:12:04,170 --> 00:12:08,990
+can actually incorporate the big data
+analytics into network competition.
+
+232
+00:12:08,990 --> 00:12:10,460
+Which is not that easy.
+
+233
+00:12:10,460 --> 00:12:13,530
+>> Okay.
+>> Because networks are not that easily.
+
+234
+00:12:13,530 --> 00:12:15,750
+Partitioned, you know, sensibly.
+
+235
+00:12:15,750 --> 00:12:19,780
+So we need to figure out how to
+partition networks sensibly, so
+
+236
+00:12:19,780 --> 00:12:23,030
+that we don't have too much communication
+going on between the nodes.
+
+237
+00:12:23,030 --> 00:12:24,070
+>> Okay.
+>> And,
+
+238
+00:12:24,070 --> 00:12:26,920
+also that we don't sacrifice
+too much of accuracy.
+
+239
+00:12:27,920 --> 00:12:30,750
+Mining is a different issue,
+because I think mining, you know,
+
+240
+00:12:30,750 --> 00:12:35,740
+as long as you find out the trends, it's
+okay, but with networks, you know it's.
+
+241
+00:12:35,740 --> 00:12:38,600
+Still a tough problem how to let.
+
+242
+00:12:38,600 --> 00:12:41,530
+And then also like we need to
+adopt our algorithms also to
+
+243
+00:12:41,530 --> 00:12:44,040
+sort this big data paradigm.
+
+244
+00:12:44,040 --> 00:12:48,300
+We need to figure how to do that and
+even if we don't move into that.
+
+245
+00:12:48,300 --> 00:12:51,200
+You know,
+as the value of the data increases.
+
+246
+00:12:51,200 --> 00:12:53,000
+It is basically, and
+
+247
+00:12:53,000 --> 00:12:57,040
+also even just bringing in time
+kind of complicated everything.
+
+248
+00:12:57,040 --> 00:12:59,150
+>> You explode the data volume, right.
+
+249
+00:12:59,150 --> 00:13:02,190
+For each instance you may have
+a replication of that network.
+
+250
+00:13:02,190 --> 00:13:05,010
+>> Yeah.
+Yeah, and so it is basically, and
+
+251
+00:13:05,010 --> 00:13:07,870
+also like we cannot apply
+the old algorithm techniques.
+
+252
+00:13:07,870 --> 00:13:08,470
+>> Okay.
+Okay.
+
+253
+00:13:09,710 --> 00:13:14,100
+>> You know, most of the assumptions
+that we made with respect to the old.
+
+254
+00:13:14,100 --> 00:13:18,400
+>> Design can not be applied when
+time comes then because most fo
+
+255
+00:13:18,400 --> 00:13:21,930
+the properties that we relied on to
+apple these techniques are breaking.
+
+256
+00:13:21,930 --> 00:13:22,630
+>> Right.
+
+257
+00:13:22,630 --> 00:13:26,285
+>> And for example,
+like in program to find the best.
+
+258
+00:13:26,285 --> 00:13:29,771
+>> [INAUDIBLE] to answer
+the question where to start.
+
+259
+00:13:29,771 --> 00:13:31,072
+So I [CROSSTALK].
+>> Oh wow.
+
+260
+00:13:31,072 --> 00:13:33,770
+So, we did,
+we did talk about [INAUDIBLE] and A stars,
+
+261
+00:13:33,770 --> 00:13:37,040
+so what happens to those
+when you add time?
+
+262
+00:13:37,040 --> 00:13:42,770
+>> Because [INAUDIBLE] basically depends
+on a property called greedy property, and
+
+263
+00:13:42,770 --> 00:13:47,720
+which actually depends on a sub-optimal
+structure, in, of the final solution,
+
+264
+00:13:47,720 --> 00:13:49,380
+which breaks when.
+
+265
+00:13:49,380 --> 00:13:53,890
+When we actually extend
+the shortest path question to,
+
+266
+00:13:53,890 --> 00:13:56,830
+when is the best time to start so
+that I spend the least time on the road?
+
+267
+00:13:56,830 --> 00:14:01,770
+You know, so we are actually talking about
+optimising it across, on the graph and
+
+268
+00:14:01,770 --> 00:14:02,810
+across time too.
+
+269
+00:14:02,810 --> 00:14:08,350
+So when that comes in, the greedy property
+doesn't, is not satisfied anymore.
+
+270
+00:14:08,350 --> 00:14:09,940
+So I cannot extend.
+
+271
+00:14:09,940 --> 00:14:10,530
+Extra easily.
+
+272
+00:14:10,530 --> 00:14:11,960
+>> Yeah, wonderful.
+
+273
+00:14:11,960 --> 00:14:12,760
+>> yes.
+>> Sounds like lot
+
+274
+00:14:12,760 --> 00:14:14,540
+of interesting opportunities in.
+
+275
+00:14:14,540 --> 00:14:16,660
+>> Yes.
+>> In the area for, or the room for
+
+276
+00:14:16,660 --> 00:14:17,940
+this area to grow.
+
+277
+00:14:17,940 --> 00:14:19,622
+>> Yes, for a researcher, yes.
+
+278
+00:14:19,622 --> 00:14:21,820
+[LAUGH]
+>> [LAUGH] Wonderful.
+
+279
+00:14:21,820 --> 00:14:25,770
+So thank you so much Vetsi/b for you know
+taking the time to talk to our audience.
+
+280
+00:14:25,770 --> 00:14:28,940
+And you are in really a sweet spot
+where you can look at the research and
+
+281
+00:14:28,940 --> 00:14:31,700
+also you can bring it to
+an influential product.
+
+282
+00:14:31,700 --> 00:14:35,620
+Which is now being used by really,
+really large number of people so.
+
+283
+00:14:35,620 --> 00:14:38,660
+>> Thank you, thank you for
+giving me this opportunity.
+
+284
+00:14:38,660 --> 00:14:42,130
+This is such an honor and you know, a
+great honor to be a part of this project.
+
+285
+00:14:42,130 --> 00:14:43,160
+Thank you.
+
+286
+00:14:43,160 --> 00:14:44,070
+>> Thanks.
+
+287
+00:14:44,070 --> 00:14:44,640
+>> Thank you.
+
+288
+00:14:44,640 --> 00:14:48,530
+>> Wonderful so so
+this was Doctor Betsy George.
+
+289
+00:14:48,530 --> 00:14:51,910
+A principle in a member technical
+staff at Oracle Special.
+
+290
+00:14:51,910 --> 00:14:56,310
+And in a lot of thing she talked about we
+covered in the module on spatial network.
+
+291
+00:14:56,310 --> 00:14:58,710
+This is a field which all ready
+has many applications and
+
+292
+00:14:58,710 --> 00:15:01,820
+as you heard looks like there will
+be many more in coming years.
+
+293
+00:15:01,820 --> 00:15:05,050
+And hopefully some of the people in
+this course will be participating and
+
+294
+00:15:05,050 --> 00:15:07,210
+shaping this field in the near future.
+
+295
+00:15:07,210 --> 00:15:10,190
+Thank you and next interview we'll meet
+a few of the researchers in this area.
+
