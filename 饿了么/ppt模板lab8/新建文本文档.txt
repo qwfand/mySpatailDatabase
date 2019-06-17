@@ -1,0 +1,74 @@
+create or replace function InsertTriggerorder()
+returns trigger as $$
+declare
+lim int;
+amount1 int;
+begin 
+amount1=new.amount;
+lim = (select lim_amount from goods where goods.gid=new.gid);
+if  lim<amount1 then  amount1:=lim;
+end if;
+insert into order_info values (new.oid, new.expected_time,new.begintime,
+							   new.endtime,new.weather,new.destination,new.state,amount1,new.discount);
+insert into ordr_infor2 values (new.oid,new.gid,new.did,new.mid,new.uid);
+return new;
+end;
+$$language plpgsql;
+
+drop trigger if exists inserttrigger on morder;
+Create trigger InsertTrigger
+instead of insert on morder
+For Each Row
+execute procedure inserttriggerorder();
+
+
+test 
+insert into morder values('5','1','1','1','1','qwf',15,'aa',null,null,null,null,null,'110',1,3)
+
+morder 更新时(state 设置为完成)
+
+create or replace function updataTriggerorder()
+returns trigger as $$
+begin 
+if new.state=3 then
+update order_infor set state = 3 where oid =new.oid;
+update user1 set 
+total_discount=(select total_discount from user1 where uid=new.uid)+new.discount where uid=new.uid;
+update merchant set 
+total_turnover=(select total_turnover from merchant where id=new.mid)+new.amount*new.price  where id=new.mid;
+   end if;
+   return new;
+end;
+$$language plpgsql;
+
+drop trigger if exists updatatrigger on morder;
+Create trigger updataTrigger
+instead of update on morder
+For Each Row
+execute procedure updatatriggerorder();
+
+update morder set state=3 where oid='3'
+
+
+update user_order1 set state =3
+
+
+初始店铺营业额
+select name,total_turnover from merchant
+初始用户节省金额
+select uname,total_discount  from user1
+
+
+初始订单
+select oid,usernmae,mid,price,state,amount,discount from morder
+  用户查询订单
+select oid,usernmae,mid,price,state,amount,discount from user_order1
+
+
+用户1插入一个订单
+insert into user_order1 values('7','1','1','0','1','qwf',15,null,null,(select now()),null,'sunny'
+																	  ,(select nowlocation from user1 where uid='1')
+																	  ,'15287814721',1,3,6)
+
+用户收货更新订单状态（ 当用户1把他的订单状态改为3（完成时）  ）
+update user_order1 set state=3 where oid='6'                                                                      
